@@ -1,0 +1,15 @@
+{
+  "device_name": "<%= @device_name %>",
+  "listening_port" : <%= @listening_port %>,
+  "storage_path" : "<%= @storage_path %>",
+  "check_for_updates" : <%= @check_for_updates %>,
+  "use_upnp" : <%= @use_upnp %>,
+  "download_limit" : <%= @download_limit %>,
+  "upload_limit" : <%= @upload_limit %>,
+  "webui" :
+  {
+    "listen" : "<%= @webui['listen'] %>",
+    "login" : "<%= @webui['login'] %>",
+    "password" : "<%= @webui['password'] %>"
+  }
+}
