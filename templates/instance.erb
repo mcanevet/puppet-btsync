@@ -1,15 +1,32 @@
-{
-  "device_name": "<%= @device_name %>",
-  "listening_port" : <%= @listening_port %>,
-  "storage_path" : "<%= @storage_path %>",
-  "check_for_updates" : <%= @check_for_updates %>,
-  "use_upnp" : <%= @use_upnp %>,
-  "download_limit" : <%= @download_limit %>,
-  "upload_limit" : <%= @upload_limit %>,
-  "webui" :
-  {
-    "listen" : "<%= @webui['listen'] %>",
-    "login" : "<%= @webui['login'] %>",
-    "password" : "<%= @webui['password'] %>"
-  }
+<%- require 'json' -%>
+//!/usr/lib/btsync/btsync-daemon --config
+//
+// DAEMON_UID=<%= @user %>
+// DAEMON_GID=<%= @group %>
+// DAEMON_UMASK=<%= @umask %>
+<%=
+conf = {
+  :device_name       => @device_name,
+  :listening_port    => @listening_port.to_i,
+  :check_for_updates => @check_for_updates,
+  :use_upnp          => @use_upnp,
+  :download_limit    => @download_limit.to_i,
+  :upload_limit      => @upload_limit.to_i,
+  :webui             => {},
+  :shared_folders    => [],
 }
+conf[:storage_path] = @storage_path if @storage_path
+conf[:pid_file] = @pid_file if @pid_file
+if @webui['listen'] then
+  conf[:webui][:listen] = @webui['listen']
+  if @webui['login'] then
+    conf[:webui][:login] = @webui['login']
+    conf[:webui][:password] = @webui['password']
+  end
+end
+conf[:disk_low_priority] = @disk_low_priority if @disk_low_priority
+conf[:lan_encrypt_data] = @lan_encrypt_data if @lan_encrypt_data
+conf[:lan_use_tcp] = @lan_use_tcp if @lan_use_tcp
+conf[:rate_limit_local_peers] = @rate_limit_local_peers if @rate_limit_local_peers
+JSON.pretty_generate(conf)
+%>
