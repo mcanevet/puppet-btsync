@@ -4,6 +4,5 @@ class btsync::service {
   service{'btsync':
     ensure    => $ensure,
     enable    => $::btsync::enable,
-    hasstatus => false,
   }
 }
