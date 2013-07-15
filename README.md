@@ -9,17 +9,9 @@ The btsync module allows you to easily manage btsync instances with Puppet.
 Pre-requirement
 ---------------
 
-You need a btsync package for one source (I use debian package from yeasoft).
+If you don't already have a btsync package repository, you can include btsync::repo class, that will configure yeasoft repository for Debian and Ubuntu:
 
-    apt::source{'btsync':
-      location          => 'http://debian.yeasoft.net/btsync',
-      release           => 'wheezy',
-      repos             => 'main contrib non-free',
-      required_packages => 'debian-keyring debian-archive-keyring',
-      key               => '6BF18B15',
-      key_server        => 'pgp.mit.edu',
-      include_src       => false,
-    }
+    include btsync::repo
 
 
 Usage
@@ -69,3 +61,8 @@ You can also store you configuration in hiera:
 And simply include the `btsync` class if you have puppet 3+:
 
     include btsync
+
+Todo
+----
+
+Support Shared Folders.
