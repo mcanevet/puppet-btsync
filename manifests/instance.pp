@@ -1,3 +1,20 @@
+# == Define: btsync::instance
+#
+# Launch btsync daemon with resource parameters.
+#
+# === Parameters
+#
+# [*user*]
+#   A uid for supplying the user under which the btsync daemon should run
+#   Defaults to $name.
+#
+# [*group*]
+#   A gid for supplying the group under which the btsync daemon should run.
+#   If omitted the daemon will run under the primary group of the user.
+#
+# [*umask*]
+#   The umask for the btsync damon. If omitted the default umask is used.
+#
 define btsync::instance(
   $user = $name,
   $group = undef,
