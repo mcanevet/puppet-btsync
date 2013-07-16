@@ -43,6 +43,33 @@
 # [*upload_limit*]
 #   Upload limit in kB/s. 0 means no limit. Defauls to 0.
 #
+# [*webui*]
+#   Web ui configuration hash:
+#
+#   [*listen*]
+#     Address and port to listen to.
+#
+#   [*login*]
+#     Web ui login.
+#
+#   [*password*]
+#     Web ui password.
+#
+# [*disk_low_priority*]
+#   Sets priority for the file operations on disc. If set to `false`, Sync will
+#   perform read and write file operations with	the highest speed and priority
+#   which can result in degradation of performance for othe applications.
+#
+# [*lan_encrypt_data*]
+#   If set to `true`, will use encryption in the local network.
+#
+# [*lan_use_tcp*]
+#   If set to `true`, Sync will use TCP instead of UDP in local network.
+#   
+# [*rate_limit_local_peers*]
+#   Applies speed limits to the peers in local network.
+#   By default the limits are not applied in LAN.
+#
 define btsync::instance(
   $user = $name,
   $group = undef,

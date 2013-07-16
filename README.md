@@ -174,8 +174,37 @@ Download limit in kB/s. `0` means no limit. Defaults to `0`.
 ####`upload_limit`
 Upload limit in kB/s. `0` means no limit. Defauls to `0`.
 
+####`webui`
+Hash containing web user interface configuration.
+
+####`webui['listen']`
+Address and port to listen to.
+
+####`webui['login']`
+Web ui login.
+
+####`webui['password']`
+Web ui password.
+
+####`shared_folders`
+Hash containing shared folders resources.
+
+####`disk_low_priority`
+Sets priority for the file operations on disc. If set to `false`, Sync will perform read and write file operations with	the highest speed and priority which can result in degradation of performance for othe applications.
+
+####`lan_encrypt_data`
+If set to `true`, will use encryption in the local network.
+
+####`lan_use_tcp`
+If set to `true`, Sync will use TCP instead of UDP in local network.
+Note: disabling	encryption and using TCP in LAN can increase speed ofsync on low-end devices due to lower use of CPU.
+
+####`rate_limit_local_peers`
+Applies speed limits to the peers in local network. By default the limits are not applied in LAN.
+
 TODO
 ----
 
 * Unit tests
 * Manage known hosts
+* Finish documentation
