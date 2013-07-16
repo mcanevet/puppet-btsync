@@ -27,11 +27,31 @@ define btsync::instance(
   validate_absolute_path($conffile)
   validate_absolute_path($storage_path)
 
-  file{$conffile:
-    owner   => $user,
-    group   => $group,
-    mode    => '0400',
-    content => template('btsync/instance.erb')
+  concat_build { "instance_${name}":
+    order  => ['*.tmp'],
+  }
+
+  concat_fragment { "instance_${name}+01.tmp":
+    content => template('btsync/global.erb'),
+  }
+
+  concat_fragment { "instance_${name}+99.tmp":
+    content => '  ]
+}',
+  }
+
+  concat_build { "instance_${name}_shared_folders":
+    parent_build   => "instance_${name}",
+    target         => "/var/lib/puppet/concat/fragments/instance_${name}/04.tmp",
+    file_delimiter => ',',
+    append_newline => false,
+  }
+
+  file { $conffile:
+    owner  => $user,
+    group  => $group,
+    mode   => '0400',
+    source => concat_output("instance_${name}"),
   }
 
   Btsync::Shared_folder{

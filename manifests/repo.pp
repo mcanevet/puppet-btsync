@@ -3,7 +3,7 @@ class btsync::repo {
     Debian: {
       apt::source { 'btsync':
         location          => 'http://debian.yeasoft.net/btsync',
-        release           => 'wheezy',
+        release           => $::lsbdistcodename,
         repos             => 'main contrib non-free',
         required_packages => 'debian-keyring debian-archive-keyring',
         key               => '6BF18B15',

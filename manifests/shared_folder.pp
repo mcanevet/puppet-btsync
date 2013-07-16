@@ -1,7 +1,6 @@
 # == Define: btsync::shared_folder
 #
 #   Configure a shared folder
-#   FIXME: Find a way to generate a valid json file with multiple resources
 #
 define btsync::shared_folder(
   $instance,
@@ -14,5 +13,8 @@ define btsync::shared_folder(
   $use_sync_trash = true,
   $known_hosts = [],
 ) {
-  fail 'btsync::shared_folder is not yet implemented'
+  $shared_folder = regsubst($name, '/', '_', 'G')
+  concat_fragment { "instance_${instance}_shared_folders+${shared_folder}":
+    content => template('btsync/shared_folder.erb'),
+  }
 }

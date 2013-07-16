@@ -1,0 +1,25 @@
+//!/usr/lib/btsync/btsync-daemon --config
+//
+// DAEMON_UID=<%= @user %>
+// DAEMON_GID=<%= @group %>
+// DAEMON_UMASK=<%= @umask %>
+{
+  "device_name": "<%= @device_name %>",
+  "listening_port": <%= @listening_port.to_i %>,
+<%- if @storage_path -%>
+  "storage_path": "<%= @storage_path %>",
+<%- end -%>
+  "check_for_updates": <%= @check_for_updates %>,
+  "use_upnp": <%= @use_upnp %>,
+  "download_limit": <%= @download_limit.to_i %>,
+  "upload_limit": <%= @upload_limit.to_i %>,
+  "webui": {
+<%- if @webui['listen'] -%>
+    "listen": "<%= @webui['listen'] %>"<%- if @webui['login'] -%>,
+    "login": "<%= @webui['login'] %>",
+    "password": "<%= @webui['password'] %>"
+<%- end -%>
+<%- end -%>
+  },
+  "shared_folders":
+  [
