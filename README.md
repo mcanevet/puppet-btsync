@@ -62,7 +62,46 @@ And simply include the `btsync` class if you have puppet 3+:
 
     include btsync
 
-Todo
-----
+Shared folders
+--------------
 
-Support Shared Folders.
+You can also declare a shared folder:
+
+    btsync::shared_folder { '/mnt/btsync':
+      instance => 'btsync',
+      secret   => 'MySecret',
+    }
+
+Or in in one step:
+
+    class { 'btsync':
+      instances => {
+        btsync => {
+          storage_path => '/home/btsync/.sync',
+          webui        => {
+            listen   => '0.0.0.0:8888',
+            login    => 'btsync',
+            password => 'password',
+          },
+          shared_folder => {
+            /mnt/btsync => {
+              secret => 'MySecret',
+            }
+          }
+        }
+      }
+    }
+
+And opf course in hiera:
+
+    ---
+    btsync::instances:
+      btsync:
+        storage_path: /home/btsync/.sync
+        webui:
+          listen: 0.0.0.0:8888
+          login: btsync
+          password: password
+        shared_folder:
+          /mnt/btsync:
+            secret: MySecret
