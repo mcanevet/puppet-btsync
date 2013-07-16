@@ -15,6 +15,34 @@
 # [*umask*]
 #   The umask for the btsync damon. If omitted the default umask is used.
 #
+# [*conffile*]
+#   Override default configuration file. Defaults to /etc/btsync/$name.conf
+#
+# [*device_name*]
+#   Public name of the device. Defaults to $name.
+#
+# [*listening_port*]
+#   Port the daemon listen to. Defaults to 0 (random port).
+#
+# [*storage_path*]
+#   storage_path dir contains auxilliary app files if no storage_path field:
+#   .sync dir created in the directory where binary is located.
+#
+# [*pid_file*]
+#   Override location of pid file.
+#
+# [*check_for_updates*]
+#   Whether or not check for updates. Defaults to false.
+#
+# [*use_upnp*]
+#   Whether or not use UPnP for port mapping. Defaults to true.
+#
+# [*download_limit*]
+#   Download limit in kB/s. 0 means no limit. Defaults to 0.
+#
+# [*upload_limit*]
+#   Upload limit in kB/s. 0 means no limit. Defauls to 0.
+#
 define btsync::instance(
   $user = $name,
   $group = undef,
