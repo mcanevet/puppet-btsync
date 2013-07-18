@@ -100,14 +100,13 @@ define btsync::instance(
   validate_absolute_path($storage_path)
 
   concat_build { "instance_${name}":
-    order  => ['*.tmp'],
   }
 
-  concat_fragment { "instance_${name}+01.tmp":
+  concat_fragment { "instance_${name}+01":
     content => template('btsync/global.erb'),
   }
 
-  concat_fragment { "instance_${name}+99.tmp":
+  concat_fragment { "instance_${name}+99":
     content => '  ]
 }',
   }

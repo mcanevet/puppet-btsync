@@ -16,7 +16,7 @@ define btsync::shared_folder(
   if ! defined(Concat_build["instance_${instance}_shared_folders"]) {
     concat_build { "instance_${instance}_shared_folders":
       parent_build   => "instance_${instance}",
-      target         => "/var/lib/puppet/concat/fragments/instance_${instance}/04.tmp",
+      target         => "/var/lib/puppet/concat/fragments/instance_${instance}/04",
       file_delimiter => ',',
       append_newline => false,
     }
