@@ -14,6 +14,7 @@ define btsync::shared_folder(
   $known_hosts = [],
 ) {
   $shared_folder = regsubst($name, '/', '_', 'G')
+  validate_array($known_hosts)
   concat_fragment { "instance_${instance}_shared_folders+${shared_folder}":
     content => template('btsync/shared_folder.erb'),
   }

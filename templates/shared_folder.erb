@@ -7,5 +7,7 @@
       "use_dht" : <%= @use_dht %>,
       "search_lan" : <%= @search_lan %>,
       "use_sync_trash" : <%= @use_sync_trash %>,
-      "known_hosts" : []
+      "known_hosts" : [
+      "<%= @known_hosts.join('",\n') %>"
+      ]
     }
