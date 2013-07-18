@@ -112,13 +112,6 @@ define btsync::instance(
 }',
   }
 
-  concat_build { "instance_${name}_shared_folders":
-    parent_build   => "instance_${name}",
-    target         => "/var/lib/puppet/concat/fragments/instance_${name}/04.tmp",
-    file_delimiter => ',',
-    append_newline => false,
-  }
-
   file { $conffile:
     owner  => $user,
     group  => $group,
