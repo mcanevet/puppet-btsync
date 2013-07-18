@@ -99,7 +99,13 @@ define btsync::instance(
   validate_absolute_path($conffile)
   validate_absolute_path($storage_path)
 
-  concat_build { "instance_${name}":
+  concat_build { "instance_${name}": }
+  ->
+  file { $conffile:
+    owner  => $user,
+    group  => $group,
+    mode   => '0400',
+    source => concat_output("instance_${name}"),
   }
 
   concat_fragment { "instance_${name}+01":
@@ -109,13 +115,6 @@ define btsync::instance(
   concat_fragment { "instance_${name}+99":
     content => '  ]
 }',
-  }
-
-  file { $conffile:
-    owner  => $user,
-    group  => $group,
-    mode   => '0400',
-    source => concat_output("instance_${name}"),
   }
 
   Btsync::Shared_folder{
