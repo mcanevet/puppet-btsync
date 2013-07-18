@@ -206,5 +206,4 @@ TODO
 ----
 
 * Unit tests
-* Manage known hosts
 * Finish documentation
