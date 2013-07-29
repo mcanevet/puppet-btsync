@@ -60,15 +60,38 @@
 #   perform read and write file operations with the highest speed and priority
 #   which can result in degradation of performance for othe applications.
 #
+# [*folder_rescan_interval*]
+#   Sets a time interval in seconds for rescanning sync folders.
+#   This serves as an additional measure for detecting changes in file system.
+#
 # [*lan_encrypt_data*]
 #   If set to `true`, will use encryption in the local network.
 #
 # [*lan_use_tcp*]
 #   If set to `true`, Sync will use TCP instead of UDP in local network.
 #
+# [*max_file_size_diff_for_patching*]
+#   Determines a size difference in MB between versions of one file for
+#   patching. When it is reached or exceeded, the file will be updated by
+#   downloading missing chunks of information (patches). Updates for a file
+#   with a smaller size difference will be downloaded as separate files.
+#
+# [*max_file_size_for_versioning*]
+#   Determines maximum file size in MB for creating file versions. When this
+#   size is exceeded, versions will not be created to save space on disk.
+#
 # [*rate_limit_local_peers*]
 #   Applies speed limits to the peers in local network.
 #   By default the limits are not applied in LAN.
+#
+# [*sync_max_time_diff*]
+#   Shows maximum allowed time in seconds difference between devices. If the
+#   difference exceeds this limit, the devices will not be synced as it may
+#   result in incorrect tracing of file changes.
+#
+# [*sync_trash_ttl*]
+#   Sets the number of days after reaching which files will be automatically
+#   deleted from the .SyncArchive folder.
 #
 define btsync::instance(
   $user = $name,
@@ -91,9 +114,14 @@ define btsync::instance(
   },
   $shared_folders = {},
   $disk_low_priority = undef,
+  $folder_rescan_interval = undef,
   $lan_encrypt_data = undef,
   $lan_use_tcp = undef,
+  $max_file_size_diff_for_patching = undef,
+  $max_file_size_for_versioning = undef,
   $rate_limit_local_peers = undef,
+  $sync_max_time_diff = undef,
+  $sync_trash_ttl = undef,
 ) {
 
   validate_absolute_path($conffile)
@@ -131,31 +159,67 @@ define btsync::instance(
     content => template('btsync/webui.erb'),
   }
 
+  # Advanced Preferences
   if $disk_low_priority != undef {
-    concat_fragment { "btsync_${name}_json+10":
+    concat_fragment { "btsync_${name}_json+disk_low_priority":
       content => "
   \"disk_low_priority\": ${disk_low_priority}",
     }
   }
 
+  if $folder_rescan_interval != undef {
+    concat_fragment { "btsync_${name}_json+folder_rescan_interval":
+      content => "
+  \"folder_rescan_interval\": ${folder_rescan_interval}",
+    }
+  }
+
   if $lan_encrypt_data != undef {
-    concat_fragment { "btsync_${name}_json+11":
+    concat_fragment { "btsync_${name}_json+lan_encrypt_data":
       content => "
   \"lan_encrypt_data\": ${lan_encrypt_data}",
     }
   }
 
   if $lan_use_tcp != undef {
-    concat_fragment { "btsync_${name}_json+12":
+    concat_fragment { "btsync_${name}_json+lan_use_tcp":
       content => "
   \"lan_use_tcp\": ${lan_use_tcp}",
     }
   }
 
+  if $max_file_size_diff_for_patching != undef {
+    concat_fragment { "btsync_${name}_json+max_file_size_diff_for_patching":
+      content => "
+  \"max_file_size_diff_for_patching\": ${max_file_size_diff_for_patching}",
+    }
+  }
+
+  if $max_file_size_for_versioning != undef {
+    concat_fragment { "btsync_${name}_json+max_file_size_for_versioning":
+      content => "
+  \"max_file_size_for_versioning\": ${max_file_size_for_versioning}",
+    }
+  }
+
   if $rate_limit_local_peers != undef {
-    concat_fragment { "btsync_${name}_json+13":
+    concat_fragment { "btsync_${name}_json+rate_limit_local_peers":
       content => "
   \"rate_limit_local_peers\": ${rate_limit_local_peers}",
+    }
+  }
+
+  if $sync_max_time_diff != undef {
+    concat_fragment { "btsync_${name}_json+sync_max_time_diff":
+      content => "
+  \"sync_max_time_diff\": ${sync_max_time_diff}",
+    }
+  }
+
+  if $sync_trash_ttl != undef {
+    concat_fragment { "btsync_${name}_json+sync_trash_ttl":
+      content => "
+  \"sync_trash_ttl\": ${sync_trash_ttl}",
     }
   }
 

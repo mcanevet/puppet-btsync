@@ -266,6 +266,10 @@ Hash containing shared folders resources.
 ####`disk_low_priority`
 Sets priority for the file operations on disc. If set to `false`, Sync will perform read and write file operations with	the highest speed and priority which can result in degradation of performance for othe applications.
 
+####`folder_rescan_interval`
+Sets a time interval in seconds for rescanning sync folders.
+This serves as an additional measure for detecting changes in file system.
+
 ####`lan_encrypt_data`
 If set to `true`, will use encryption in the local network.
 
@@ -273,8 +277,20 @@ If set to `true`, will use encryption in the local network.
 If set to `true`, Sync will use TCP instead of UDP in local network.
 Note: disabling	encryption and using TCP in LAN can increase speed ofsync on low-end devices due to lower use of CPU.
 
+####`max_file_size_diff_for_patching`
+Determines a size difference in MB between versions of one file for patching. When it is reached or exceeded, the file will be updated by downloading missing chunks of information (patches). Updates for a file with a smaller size difference will be downloaded as separate files.
+
+####`max_file_size_for_versioning`
+Determines maximum file size in MB for creating file versions. When this size is exceeded, versions will not be created to save space on disk.
+
 ####`rate_limit_local_peers`
 Applies speed limits to the peers in local network. By default the limits are not applied in LAN.
+
+####`sync_max_time_diff`
+Shows maximum allowed time in seconds difference between devices. If the difference exceeds this limit, the devices will not be synced as it may result in incorrect tracing of file changes.
+
+####`sync_trash_ttl`
+Sets the number of days after reaching which files will be automatically deleted from the .SyncArchive folder.
 
 TODO
 ----
