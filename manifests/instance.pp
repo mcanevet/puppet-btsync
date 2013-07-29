@@ -57,7 +57,7 @@
 #
 # [*disk_low_priority*]
 #   Sets priority for the file operations on disc. If set to `false`, Sync will
-#   perform read and write file operations with	the highest speed and priority
+#   perform read and write file operations with the highest speed and priority
 #   which can result in degradation of performance for othe applications.
 #
 # [*lan_encrypt_data*]
@@ -65,7 +65,7 @@
 #
 # [*lan_use_tcp*]
 #   If set to `true`, Sync will use TCP instead of UDP in local network.
-#   
+#
 # [*rate_limit_local_peers*]
 #   Applies speed limits to the peers in local network.
 #   By default the limits are not applied in LAN.

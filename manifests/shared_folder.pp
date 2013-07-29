@@ -2,6 +2,38 @@
 #
 #   Configure a shared folder
 #
+# === Parameters
+#
+# [*instance*]
+#   Name of the instance sharing this folder.
+#
+# [*secret*]
+#   Shared secret.
+#
+# [*dir*]
+#   Directory to shared. Defaults to resource name.
+#
+# [*use_relay_server*]
+#   Whether or not use relay server when direct connection fails. Defaults to
+#   `true`.
+#
+# [*use_tracker*]
+#   can be enabled to facilitate communication between peers.
+#
+# [*use_dht*]
+#
+# [*search_lan*]
+#
+# [*use_sync_trash*]
+#   Whether or not save all the files deleted on other clients to the hidden
+#   '.SyncArchive' within your destination folder. The files deleted on your
+#   computer are moved to system Trash (depending on OS preferences).
+#
+# [*known_hosts*]
+#   An option to specify ip:port or host:port of known clients. So if one of
+#   your devices has a static and accessible IP, peers can connect to it
+#   directly.
+#
 define btsync::shared_folder(
   $instance,
   $secret,
