@@ -93,6 +93,14 @@
 #   Sets the number of days after reaching which files will be automatically
 #   deleted from the .SyncArchive folder.
 #
+# === Author
+#
+# Mickaël Canévet <mickael.canevet@gmail.com>
+#
+# === Copyright
+#
+# Copyright 2013 Mickaël Canévet, unless otherwise noted.
+#
 define btsync::instance(
   $user = $name,
   $group = undef,

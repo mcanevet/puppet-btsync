@@ -7,11 +7,11 @@
 # [*instance*]
 #   Name of the instance sharing this folder.
 #
-# [*secret*]
-#   Shared secret. Defaults to resource name.
-#
 # [*dir*]
 #   Directory to share.
+#
+# [*secret*]
+#   Shared secret. Defaults to resource name.
 #
 # [*use_relay_server*]
 #   Whether or not use relay server when direct connection fails. Defaults to
@@ -30,9 +30,17 @@
 #   computer are moved to system Trash (depending on OS preferences).
 #
 # [*known_hosts*]
-#   An option to specify ip:port or host:port of known clients. So if one of
+#   An array containing the ip:port or host:port of known clients. So if one of
 #   your devices has a static and accessible IP, peers can connect to it
 #   directly.
+#
+# === Author
+#
+# Mickaël Canévet <mickael.canevet@gmail.com>
+#
+# === Copyright
+#
+# Copyright 2013 Mickaël Canévet, unless otherwise noted.
 #
 define btsync::shared_folder(
   $instance,

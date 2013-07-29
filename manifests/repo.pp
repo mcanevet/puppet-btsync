@@ -1,3 +1,15 @@
+# == Class: btsync::repo
+#
+#   Configure yeasoft repository for Debian or Ubuntu.
+#
+# === Author
+#
+# Mickaël Canévet <mickael.canevet@gmail.com>
+#
+# === Copyright
+#
+# Copyright 2013 Mickaël Canévet, unless otherwise noted.
+#
 class btsync::repo {
   case $::operatingsystem {
     Debian: {

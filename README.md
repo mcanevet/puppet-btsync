@@ -189,10 +189,16 @@ Reference
 Classes:
 
 * [btsync](#class-btsync)
+* [btsync::config](#class-btsyncconfig)
+* [btsync::install](#class-btsyncinstall)
+* [btsync::repo](#class-btsyncrepo)
+* [btsync::service](#class-btsyncservice)
 
 Resources:
 
 * [btsync::instance](#resource-btsyncinstance)
+* [btsync::shared_folder](#resource-btsyncshared_folder)
+* [btsync::known_host](#resource-btsyncknown_host)
 
 ###Class: btsync
 This class is used to install btsync.
@@ -208,6 +214,21 @@ Should the service be started by Puppet
 
 ####`instances`
 Hash of instances to run
+
+###Class: btsync::config
+Configure btsync.
+You should not declare this class explicitely, it should be done by btsync class.
+
+###Class: btsync::install
+Install btsync.
+You should not declare this class explicitely, it should be done by btsync class.
+
+###Class: btsync::repo
+Configure yeasoft repository for Debian or Ubuntu.
+
+###Class: btsync::service
+Manage btsync service. 
+You should not declare this class explicitely, it should be done by btsync class.
 
 ###Resource: btsync::instance
 This resource is used to declare a btsync instance to run.
@@ -292,8 +313,47 @@ Shows maximum allowed time in seconds difference between devices. If the differe
 ####`sync_trash_ttl`
 Sets the number of days after reaching which files will be automatically deleted from the .SyncArchive folder.
 
+###Resource: btsync::shared_folder
+This resource is used to declare a btsync shared folder for an instance.
+
+####`instance`
+Name of the instance sharing this folder.
+
+####`dir`
+Directory to share.
+
+####`secret`
+Shared secret. Defaults to resource name.
+
+####`use_relay_server`
+Whether or not use relay server when direct connection fails. Defaults to `true`.
+
+####`use_tracker`
+Can be enabled to facilitate communication between peers.
+
+####`use_dht`
+
+####`search_lan`
+
+####`use_sync_trash`
+Whether or not save all the files deleted on other clients to the hidden '.SyncArchive' within your destination folder. The files deleted on your computer are moved to system Trash (depending on OS preferences).
+
+####`known_hosts`
+An array containing the ip:port or host:port of known clients. So if one of your devices has a static and accessible IP, peers can connect to it directly.
+
+###Resource: btsync::known_host
+Add a known host to the list of known hosts of a shared folder.
+
+####`secret`
+The secret of the shared folder.
+
+####`instance`
+The instance to use. Defaults to the instance of the shared folder of the secret passed as parameter.
+
+####`host`
+The host to add. Defaults to namevar.
+
 TODO
 ----
 
 * Unit tests
-* Finish documentation
