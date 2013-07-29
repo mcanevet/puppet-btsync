@@ -1,5 +1,5 @@
 name         'mcanevet-btsync'
-version      '0.2.2'
+version      '0.3.0'
 dependency   'puppetlabs/stdlib', '>= 0.0.1'
 dependency   'puppetlabs/apt', '>= 0.0.1'
 dependency   'theforeman/concat_native', '>= 0.0.1'

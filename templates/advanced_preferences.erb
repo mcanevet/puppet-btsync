@@ -1,0 +1,12 @@
+<%- if @disk_low_priority -%>
+  "disk_low_priority": <%= @disk_low_priority %>,
+<%- end -%>
+<%- if @lan_encrypt_data -%>
+  "lan_encrypt_data": <%= @lan_encrypt_data %>,
+<%- end -%>
+<%- if @lan_use_tcp -%>
+  "lan_use_tcp": <%= @lan_use_tcp %>,
+<%- end -%>
+<%- if @rate_limit_local_peers -%>
+  "rate_limit_local_peers": <%= @rate_limit_local_peers %>,
+<%- end -%>

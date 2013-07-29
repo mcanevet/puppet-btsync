@@ -1,0 +1,12 @@
+  "device_name": "<%= @device_name %>",
+  "listening_port": <%= @listening_port.to_i %>,
+<%- if @storage_path -%>
+  "storage_path": "<%= @storage_path %>",
+<%- end -%>
+<%- if @pid_file -%>
+  "pid_file": "<%= @pid_file %>",
+<%- end -%>
+  "check_for_updates": <%= @check_for_updates %>,
+  "use_upnp": <%= @use_upnp %>,
+  "download_limit": <%= @download_limit.to_i %>,
+  "upload_limit": <%= @upload_limit.to_i %>

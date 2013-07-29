@@ -26,11 +26,11 @@ Launching an instances
 
 Declare an instance:
 
-    btsync::instance { 'btsync':
-      storage_path => '/home/btsync/.sync',
+    btsync::instance { 'user':
+      storage_path => '/home/user/.sync',
       webui        => {
         listen   => '0.0.0.0:8888',
-        login    => 'btsync',
+        login    => 'admin',
         password => 'password',
       }
     }
@@ -39,11 +39,11 @@ You can also do it in one step:
 
     class { 'btsync':
       instances => {
-        btsync => {
-          storage_path => '/home/btsync/.sync',
+        user => {
+          storage_path => '/home/user/.sync',
           webui        => {
             listen   => '0.0.0.0:8888',
-            login    => 'btsync',
+            login    => 'admin',
             password => 'password',
           }
         }
@@ -54,11 +54,11 @@ You can also store you configuration in hiera:
 
     ---
     btsync::instances:
-      btsync:
-        storage_path: /home/btsync/.sync
+      user:
+        storage_path: /home/user/.sync
         webui:
           listen: 0.0.0.0:8888
-          login: btsync
+          login: admin
           password: password
 
 And simply include the `btsync` class if you have puppet 3+:
@@ -70,44 +70,118 @@ Shared folders
 
 You can also declare a shared folder:
 
-    btsync::shared_folder { '/mnt/btsync':
-      instance => 'btsync',
-      secret   => 'MySecret',
+    btsync::shared_folder { 'MY_SECRET_1':
+      instance => 'user',
+      dir      => '/home/user/bittorrent/sync_test',
     }
 
 Or in in one step:
 
     class { 'btsync':
       instances => {
-        btsync => {
-          storage_path => '/home/btsync/.sync',
+        user => {
+          storage_path => '/home/user/.sync',
           webui        => {
             listen   => '0.0.0.0:8888',
-            login    => 'btsync',
+            login    => 'admin',
             password => 'password',
           },
-          shared_folder => {
-            /mnt/btsync => {
-              secret => 'MySecret',
+          shared_folders => {
+            'MY_SECRET_1' => {
+              dir => '/home/user/bittorrent/sync_test',
             }
           }
         }
       }
     }
 
-And opf course in hiera:
+And of course in hiera:
 
     ---
     btsync::instances:
-      btsync:
-        storage_path: /home/btsync/.sync
+      user:
+        storage_path: /home/user/.sync
         webui:
           listen: 0.0.0.0:8888
-          login: btsync
+          login: admin
           password: password
-        shared_folder:
-          /mnt/btsync:
-            secret: MySecret
+        shared_folders:
+          MY_SECRET_1:
+            dir: /home/user/bittorrent/sync_test
+
+Known hosts:
+------------
+
+A Btsync::Known_host resource is automatically exported for the given secret key, and every Btsync::Known_host resources matching the given secret key are automatically realized.
+
+You can also declare explicitely a known host resource for a given secret key:
+
+    btsync::known_host { '192.168.1.2:44444':
+      secret   => 'MY_SECRET_1',
+      instance => 'btsync',
+    }
+
+Or in one step:
+
+    class { 'btsync':
+      instances => {
+        user => {
+          storage_path => '/home/user/.sync',
+          webui        => {
+            listen   => '0.0.0.0:8888',
+            login    => 'admin',
+            password => 'password',
+          },
+          shared_folders => {
+            'MY_SECRET_1' => {
+              dir         => '/home/user/bittorrent/sync_test',
+              known_hosts => ['192.168.1.2:44444'],
+            }
+          }
+        }
+      }
+    }
+
+Or with hiera:
+
+    ---
+    btsync::instances:
+      user:
+        storage_path: /home/user/.sync
+        webui:
+          listen: 0.0.0.0:8888
+          login: admin
+          password: password
+        shared_folders:
+          MY_SECRET_1:
+            dir: /home/user/bittorrent/sync_test
+            known_hosts: ['192.168.1.2:44444']
+
+This example configures an instance like the sample configuration of BitTorrent Sync 1.1.48:
+
+    ---
+    btsync::instances:
+      user:
+        device_name: My Sync Device
+        listening_port: 0
+        storage_path: /home/user/.sync
+        check_for_updates: true
+        use_upnp: true
+        download_limit: 0
+        upload_limit: 0
+        webui:
+          listen: 0.0.0.0:8888
+          login: admin
+          password: password
+        shared_folders:
+          MY_SECRET_1:
+            dir: /home/user/bittorrent/sync_test
+            use_relay_server: true
+            use_tracker: true
+            use_dht: true
+            search_lan: true
+            use_sync_trash: true
+            known_hosts: ['192.168.1.2:44444']
 
 Reference
 ---------

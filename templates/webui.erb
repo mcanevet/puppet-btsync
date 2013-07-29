@@ -1,0 +1,8 @@
+  "webui": {
+<%- if @webui['listen'] -%>
+    "listen": "<%= @webui['listen'] %>"<%- if @webui['login'] -%>,
+    "login": "<%= @webui['login'] %>",
+    "password": "<%= @webui['password'] %>"
+<%- end -%>
+<%- end -%>
+  }

@@ -99,27 +99,73 @@ define btsync::instance(
   validate_absolute_path($conffile)
   validate_absolute_path($storage_path)
 
-  concat_build { "instance_${name}": }
+  concat_build { "btsync_${name}": }
   ->
   file { $conffile:
     owner  => $user,
     group  => $group,
     mode   => '0400',
-    source => concat_output("instance_${name}"),
+    source => concat_output("btsync_${name}"),
   }
 
-  concat_fragment { "instance_${name}+01":
-    content => template('btsync/global.erb'),
+  concat_fragment { "btsync_${name}+01":
+    content => template('btsync/yeasoft_initscript_header.erb'),
   }
 
-  concat_fragment { "instance_${name}+99":
-    content => '  ]
-}',
+  concat_fragment { "btsync_${name}+02":
+    content => '{',
   }
 
-  Btsync::Shared_folder{
-    instance => $name,
+  concat_build { "btsync_${name}_json":
+    parent_build   => "btsync_${name}",
+    target         => "/var/lib/puppet/concat/fragments/btsync_${name}/03",
+    file_delimiter => ',',
+    append_newline => false,
   }
-  create_resources(btsync::shared_folder, $shared_folders)
+
+  concat_fragment { "btsync_${name}_json+01":
+    content => template('btsync/global_preferences.erb'),
+  }
+
+  concat_fragment { "btsync_${name}_json+02":
+    content => template('btsync/webui.erb'),
+  }
+
+  if $disk_low_priority != undef {
+    concat_fragment { "btsync_${name}_json+10":
+      content => "
+  \"disk_low_priority\": ${disk_low_priority}",
+    }
+  }
+
+  if $lan_encrypt_data != undef {
+    concat_fragment { "btsync_${name}_json+11":
+      content => "
+  \"lan_encrypt_data\": ${lan_encrypt_data}",
+    }
+  }
+
+  if $lan_use_tcp != undef {
+    concat_fragment { "btsync_${name}_json+12":
+      content => "
+  \"lan_use_tcp\": ${lan_use_tcp}",
+    }
+  }
+
+  if $rate_limit_local_peers != undef {
+    concat_fragment { "btsync_${name}_json+13":
+      content => "
+  \"rate_limit_local_peers\": ${rate_limit_local_peers}",
+    }
+  }
+
+  concat_fragment { "btsync_${name}+99":
+    content => '}',
+  }
+
+  create_resources(
+    btsync::shared_folder,
+    $shared_folders,
+    { instance => $name })
 
 }

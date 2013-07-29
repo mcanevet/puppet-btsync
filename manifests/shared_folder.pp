@@ -8,10 +8,10 @@
 #   Name of the instance sharing this folder.
 #
 # [*secret*]
-#   Shared secret.
+#   Shared secret. Defaults to resource name.
 #
 # [*dir*]
-#   Directory to shared. Defaults to resource name.
+#   Directory to share.
 #
 # [*use_relay_server*]
 #   Whether or not use relay server when direct connection fails. Defaults to
@@ -36,8 +36,8 @@
 #
 define btsync::shared_folder(
   $instance,
-  $secret,
-  $dir = $name,
+  $dir,
+  $secret = $name,
   $use_relay_server = true,
   $use_tracker = true,
   $use_dht = true,
@@ -45,17 +45,79 @@ define btsync::shared_folder(
   $use_sync_trash = true,
   $known_hosts = [],
 ) {
-  if ! defined(Concat_build["instance_${instance}_shared_folders"]) {
-    concat_build { "instance_${instance}_shared_folders":
-      parent_build   => "instance_${instance}",
-      target         => "/var/lib/puppet/concat/fragments/instance_${instance}/04",
+  if ! defined(Concat_build["btsync_${instance}_json_shared_folders"]) {
+    concat_build { "btsync_${instance}_json_shared_folders":
+      parent_build => "btsync_${instance}_json",
+      target       => "/var/lib/puppet/concat/fragments/btsync_${instance}_json/03",
+    }
+
+    concat_fragment { "btsync_${instance}_json_shared_folders+01":
+      content => '
+  "shared_folders":
+  [',
+    }
+
+    concat_build { "btsync_${instance}_json_shared_folders_json":
+      parent_build   => "btsync_${instance}_json_shared_folders",
+      target         => "/var/lib/puppet/concat/fragments/btsync_${instance}_json_shared_folders/02",
       file_delimiter => ',',
       append_newline => false,
     }
+
+    concat_fragment { "btsync_${instance}_json_shared_folders+99":
+      content => '  ]',
+    }
   }
-  $shared_folder = regsubst($name, '/', '_', 'G')
-  validate_array($known_hosts)
-  concat_fragment { "instance_${instance}_shared_folders+${shared_folder}":
+
+  # Fake concat_fragment resource as concat_build needs at least one
+  # concat_fragment, not only concat_build.
+  # FIXME: regenerates config file at every run...
+  concat_fragment {"btsync_${instance}_json_shared_folders_json+${secret}":
+    content => '',
+  }
+  ->
+  concat_build { "btsync_${instance}_json_shared_folders_json_${secret}":
+    parent_build => "btsync_${instance}_json_shared_folders_json",
+    target       => "/var/lib/puppet/concat/fragments/btsync_${instance}_json_shared_folders_json/${secret}",
+  }
+
+  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}+01":
+    content => '    {',
+  }
+
+  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}+99":
+    content => '    }
+',
+  }
+
+  concat_build { "btsync_${instance}_json_shared_folders_json_${secret}_json":
+    parent_build   => "btsync_${instance}_json_shared_folders_json_${secret}",
+    target         => "/var/lib/puppet/concat/fragments/btsync_${instance}_json_shared_folders_json_${secret}/02",
+    file_delimiter => ',',
+    append_newline => false,
+  }
+
+  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}_json+01":
     content => template('btsync/shared_folder.erb'),
   }
+
+  $listening_port = getparam(Btsync::Instance[$instance], 'listening_port')
+  $host = $listening_port ? {
+    0       => $::ipaddress,
+    default => "${::ipaddress}:${listening_port}",
+  }
+
+  @@btsync::known_host { "${secret} on ${::hostname}":
+    secret   => $secret,
+    instance => $instance,
+    host     => $host,
+  }
+
+  Btsync::Known_host <<| secret == $secret |>>
+
+  btsync::known_host { $known_hosts:
+    secret   => $secret,
+    instance => $instance,
+  }
+
 }
