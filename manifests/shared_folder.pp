@@ -121,15 +121,15 @@ define btsync::shared_folder(
     default => "${::ipaddress}:${listening_port}",
   }
 
-  @@btsync::known_host { "${secret} on ${::hostname}":
+  @@btsync::known_host { "exported ${secret} on ${::hostname}":
     secret   => $secret,
-    instance => $instance,
     host     => $host,
+    instance => $instance,
   }
 
   Btsync::Known_host <<| secret == $secret |>>
 
-  btsync::known_host { prefix($known_hosts, "$secret on "):
+  btsync::known_host { prefix($known_hosts, "${secret} on "):
     secret   => $secret,
     instance => $instance,
   }
