@@ -1,2 +1,5 @@
 pkg/
 *.swp
+.librarian/
+.tmp/
+spec/fixtures/
