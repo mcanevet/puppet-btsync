@@ -3,6 +3,8 @@ require 'spec_helper'
 describe 'btsync', :type => 'class' do
 
   context 'default parameters' do
+    let(:params) { { } }
+
     it { should create_class('btsync')\
       .with_version('present')\
       .with_enable(true)\
@@ -16,7 +18,7 @@ describe 'btsync', :type => 'class' do
   context 'with an instance' do
     let(:params) { {
       :instances => {
-	'btsync' => { }
+        'btsync' => { }
       }
     } }
     it { should contain_btsync__instance('btsync') }
@@ -25,8 +27,8 @@ describe 'btsync', :type => 'class' do
   context 'with multiple instances' do
     let(:params) { {
       :instances  => {
-	'btsync1' => { },
-	'btsync2' => { },
+        'btsync1' => { },
+	      'btsync2' => { },
       }
     } }
     it { should contain_btsync__instance('btsync1') }
