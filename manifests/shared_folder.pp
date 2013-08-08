@@ -127,7 +127,8 @@ define btsync::shared_folder(
 
   Btsync::Known_host <<| secret == $secret |>>
 
-  btsync::known_host { prefix($known_hosts, "${secret} on "):
+  $_known_hosts = prefix($known_hosts, "${secret} on ")
+  btsync::known_host { $_known_hosts:
     secret   => $secret,
     instance => $instance,
   }
