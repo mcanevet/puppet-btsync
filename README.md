@@ -356,4 +356,4 @@ The host to add. Defaults to namevar.
 TODO
 ----
 
-* Unit tests
+* Finish unit tests
