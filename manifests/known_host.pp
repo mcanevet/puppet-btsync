@@ -61,7 +61,7 @@ define btsync::known_host(
     }
 
     concat_build { "btsync_${instance}_json_shared_folders_json_${secret}_json_known_hosts_json":
-      parent_build   => "btsync_${instance}_json_shared_folders_json_${secret}_json_known_hosts", 
+      parent_build   => "btsync_${instance}_json_shared_folders_json_${secret}_json_known_hosts",
       target         => "/var/lib/puppet/concat/fragments/btsync_${instance}_json_shared_folders_json_${secret}_json_known_hosts/02",
       file_delimiter => ',',
       append_newline => false,
