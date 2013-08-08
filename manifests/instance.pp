@@ -172,6 +172,7 @@ define btsync::instance(
 
   # Advanced Preferences
   if $disk_low_priority != undef {
+    validate_bool($disk_low_priority)
     concat_fragment { "btsync_${name}_json+disk_low_priority":
       content => "
   \"disk_low_priority\": ${disk_low_priority}",
@@ -179,6 +180,7 @@ define btsync::instance(
   }
 
   if $folder_rescan_interval != undef {
+    validate_re($folder_rescan_interval, '\d+')
     concat_fragment { "btsync_${name}_json+folder_rescan_interval":
       content => "
   \"folder_rescan_interval\": ${folder_rescan_interval}",
@@ -186,6 +188,7 @@ define btsync::instance(
   }
 
   if $lan_encrypt_data != undef {
+    validate_bool($lan_encrypt_data)
     concat_fragment { "btsync_${name}_json+lan_encrypt_data":
       content => "
   \"lan_encrypt_data\": ${lan_encrypt_data}",
@@ -193,6 +196,7 @@ define btsync::instance(
   }
 
   if $lan_use_tcp != undef {
+    validate_bool($lan_use_tcp)
     concat_fragment { "btsync_${name}_json+lan_use_tcp":
       content => "
   \"lan_use_tcp\": ${lan_use_tcp}",
@@ -200,6 +204,7 @@ define btsync::instance(
   }
 
   if $max_file_size_diff_for_patching != undef {
+    validate_re($max_file_size_diff_for_patching, '\d+')
     concat_fragment { "btsync_${name}_json+max_file_size_diff_for_patching":
       content => "
   \"max_file_size_diff_for_patching\": ${max_file_size_diff_for_patching}",
@@ -207,6 +212,7 @@ define btsync::instance(
   }
 
   if $max_file_size_for_versioning != undef {
+    validate_re($max_file_size_for_versioning, '\d+')
     concat_fragment { "btsync_${name}_json+max_file_size_for_versioning":
       content => "
   \"max_file_size_for_versioning\": ${max_file_size_for_versioning}",
@@ -214,6 +220,7 @@ define btsync::instance(
   }
 
   if $rate_limit_local_peers != undef {
+    validate_bool($rate_limit_local_peers)
     concat_fragment { "btsync_${name}_json+rate_limit_local_peers":
       content => "
   \"rate_limit_local_peers\": ${rate_limit_local_peers}",
@@ -221,6 +228,7 @@ define btsync::instance(
   }
 
   if $sync_max_time_diff != undef {
+    validate_re($sync_max_time_diff, '\d+')
     concat_fragment { "btsync_${name}_json+sync_max_time_diff":
       content => "
   \"sync_max_time_diff\": ${sync_max_time_diff}",
@@ -228,6 +236,7 @@ define btsync::instance(
   }
 
   if $sync_trash_ttl != undef {
+    validate_re($sync_trash_ttl, '\d+')
     concat_fragment { "btsync_${name}_json+sync_trash_ttl":
       content => "
   \"sync_trash_ttl\": ${sync_trash_ttl}",

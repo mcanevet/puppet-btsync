@@ -107,7 +107,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+disk_low_priority')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /is not a boolean/)
     end
   end
 
@@ -124,7 +124,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+folder_rescan_interval')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /does not match/)
     end
   end
 
@@ -141,7 +141,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+lan_encrypt_data')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /is not a boolean/)
     end
   end
 
@@ -158,7 +158,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+lan_use_tcp')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /is not a boolean/)
     end
   end
 
@@ -175,7 +175,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+max_file_size_diff_for_patching')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /does not match/)
     end
   end
 
@@ -192,7 +192,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+max_file_size_for_versioning')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /does not match/)
     end
   end
 
@@ -209,7 +209,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+rate_limit_local_peers')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /is not a boolean/)
     end
   end
 
@@ -226,7 +226,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+sync_max_time_diff')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /does not match/)
     end
   end
 
@@ -243,7 +243,7 @@ describe 'btsync::instance', :type => :define do
     } }
     it 'should fail' do
       expect { should contain_concat_fragment('btsync_foo_json+sync_trash_ttl')
-      }.to raise_error(Puppet::Error, /lksjdfksdjlkfj/)
+      }.to raise_error(Puppet::Error, /does not match/)
     end
   end
 
