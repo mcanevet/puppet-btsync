@@ -133,7 +133,10 @@ define btsync::instance(
 ) {
 
   validate_absolute_path($conffile)
-  validate_absolute_path($storage_path)
+
+  if $storage_path != undef {
+    validate_absolute_path($storage_path)
+  }
 
   concat_build { "btsync_${name}": }
   ->
