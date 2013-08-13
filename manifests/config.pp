@@ -22,5 +22,6 @@ class btsync::config {
     recurse => true,
     force   => true,
   }
+  validate_hash($::btsync::instances)
   create_resources(btsync::instance, $::btsync::instances)
 }
