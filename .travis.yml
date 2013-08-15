@@ -2,7 +2,6 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
-  - ruby-head
 script: "rake spec"
 branches:
   only:
@@ -13,8 +12,6 @@ env:
 matrix:
   exclude:
     - rvm: 2.0.0
-      env: PUPPET_VERSION=2.7.22
-    - rvm: ruby-head
       env: PUPPET_VERSION=2.7.22
 notifications:
   email: false
