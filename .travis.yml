@@ -2,17 +2,24 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
-script: "rake spec"
+script:
+  - "rake lint"
+  - "rake spec SPEC_OPTS='--format documentation'"
 branches:
   only:
     - master
 env:
-  - PUPPET_VERSION=3.2.3
-  - PUPPET_VERSION=2.7.22
+  - PUPPET_VERSION="~> 2.6.0"
+  - PUPPET_VERSION="~> 2.7.0"
+  - PUPPET_VERSION="~> 3.0.0"
+  - PUPPET_VERSION="~> 3.1.0"
+  - PUPPET_VERSION="~> 3.2.0"
 matrix:
   exclude:
     - rvm: 2.0.0
-      env: PUPPET_VERSION=2.7.22
+      env: PUPPET_VERSION="~> 2.6.0"
+    - rvm: 2.0.0
+      env: PUPPET_VERSION="~> 2.7.0"
 notifications:
   email: false
 gemfile: .gemfile
