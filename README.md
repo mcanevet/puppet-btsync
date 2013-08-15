@@ -1,6 +1,8 @@
 BitTorrent Sync
 ===============
 
+[![Build Status](https://travis-ci.org/mcanevet/puppet-btsync.png?branch=master)](https://travis-ci.org/mcanevet/puppet-btsync)
+
 Overview
 --------
 
