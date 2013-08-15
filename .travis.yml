@@ -1,19 +1,32 @@
 language: ruby
+bundler_args: --without development
+script: "bundle exec rake spec SPEC_OPTS='--format documentation'"
 rvm:
   - 1.9.3
   - 2.0.0
-script: "rake spec"
-branches:
-  only:
-    - master
+  - ruby-head
+script:
+  - "rake lint"
+  - "rake spec SPEC_OPTS='--format documentation'"
 env:
-  - PUPPET_VERSION=3.2.3
-  - PUPPET_VERSION=2.7.22
+  - PUPPET_VERSION="~> 2.7.0"
+  - PUPPET_VERSION="~> 3.0.0"
+  - PUPPET_VERSION="~> 3.1.0"
+  - PUPPET_VERSION="~> 3.2.0"
 matrix:
+  allow_failures:
+    - rvm: ruby-head
   exclude:
-    # No support for Ruby 2.0 before Puppet 3.2
     - rvm: 2.0.0
-      env: PUPPET_VERSION=2.7.22
-notifications:
-  email: false
+      env: PUPPET_VERSION="~> 2.7.0"
+    - rvm: 2.0.0
+      env: PUPPET_VERSION="~> 3.0.0"
+    - rvm: 2.0.0
+      env: PUPPET_VERSION="~> 3.1.0"
+    - rvm: ruby-head
+      env: PUPPET_VERSION="~> 2.7.0"
+    - rvm: ruby-head
+      env: PUPPET_VERSION="~> 3.0.0"
+    - rvm: ruby-head
+      env: PUPPET_VERSION="~> 3.1.0"
 gemfile: .gemfile
