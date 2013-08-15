@@ -29,3 +29,4 @@ matrix:
       env: PUPPET_VERSION="~> 3.0.0"
     - rvm: ruby-head
       env: PUPPET_VERSION="~> 3.1.0"
+gemfile: .gemfile
