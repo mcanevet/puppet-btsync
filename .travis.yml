@@ -10,9 +10,9 @@ script:
   - "rake spec SPEC_OPTS='--format documentation'"
 env:
   - PUPPET_VERSION="~> 2.7.0"
-  - PUPPET_VERSION=3.0.2
-  - PUPPET_VERSION=3.1.1
-  - PUPPET_VERSION=3.2.3
+  - PUPPET_VERSION="~> 3.0.0"
+  - PUPPET_VERSION="~> 3.1.0"
+  - PUPPET_VERSION="~> 3.2.0"
 matrix:
   allow_failures:
     - rvm: ruby-head
@@ -20,12 +20,12 @@ matrix:
     - rvm: 2.0.0
       env: PUPPET_VERSION="~> 2.7.0"
     - rvm: 2.0.0
-      env: PUPPET_VERSION=3.0.2
+      env: PUPPET_VERSION="~> 3.0.0"
     - rvm: 2.0.0
-      env: PUPPET_VERSION=3.1.1
+      env: PUPPET_VERSION="~> 3.1.0"
     - rvm: ruby-head
-      env: PUPPET_VERSION=2.7.22
+      env: PUPPET_VERSION="~> 2.7.0"
     - rvm: ruby-head
-      env: PUPPET_VERSION=3.0.2
+      env: PUPPET_VERSION="~> 3.0.0"
     - rvm: ruby-head
-      env: PUPPET_VERSION=3.1.1
+      env: PUPPET_VERSION="~> 3.1.0"
