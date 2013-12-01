@@ -14,26 +14,4 @@ describe 'btsync::install' do
     it { expect { should create_class('btsync::install')}.to raise_error(Puppet::Error, /Invalid parameter foo/) }
   end
 
-  context 'when using default parameters' do
-    let :pre_condition do
-      "class {'btsync': }"
-    end
-
-    it { should create_class('btsync::install') }
-    it { should contain_package('btsync').with({
-      :ensure => :present,
-    })}
-  end
-
-  context 'when specifying a version' do
-    let :pre_condition do
-      "class {'btsync': version => '1.2.3',}"
-    end
-
-    it { should create_class('btsync::install') }
-    it { should contain_package('btsync').with({
-      :ensure => '1.2.3'
-    })}
-  end
-
 end
