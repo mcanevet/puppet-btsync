@@ -159,6 +159,34 @@ Or with hiera:
             dir: /home/user/bittorrent/sync_test
             known_hosts: ['192.168.1.2:44444']
 
+The define also supports composite namevars in order to easily specify the
+entry you want to manage. The format for composite namevars is:
+
+```puppet
+  <secret> on <host>
+```
+
+Example:
+
+```puppet
+btsync::known_host { 'my known host':
+  secret => 'MY_SECRET_1',
+  host   => '192.168.1.2:44444',
+}
+```
+
+equals to
+
+```puppet
+btsync::known_host { 'MY_SECRET_1 on 192.168.1.2:44444': }
+```
+
+or with an array:
+
+```puppet
+btsync::known_host { prefix(['192.168.1.2:44444'], 'MY_SECRET_1 on '): }
+```
+
 This example configures an instance like the sample configuration of BitTorrent Sync 1.1.48:
 
     ---
@@ -308,6 +336,12 @@ Determines maximum file size in MB for creating file versions. When this size is
 
 ####`rate_limit_local_peers`
 Applies speed limits to the peers in local network. By default the limits are not applied in LAN.
+
+####`send_buf_size`
+Amount of real memory that will be used for cached send operations. This value can be set in the range from 1 to 100 MB.
+
+####`recv_buf_size`
+Amount of real memory that will be used for cached receive operations. This value can be set in the range from 1 to 100 MB.
 
 ####`sync_max_time_diff`
 Shows maximum allowed time in seconds difference between devices. If the difference exceeds this limit, the devices will not be synced as it may result in incorrect tracing of file changes.

@@ -1,6 +1,6 @@
 # == Class: btsync::config
 #
-#   Manage btsync service.
+#   Manage btsync service. See README.md for more details.
 #   You should not declare this class explicitely, it should be done by btsync
 #   class.
 #

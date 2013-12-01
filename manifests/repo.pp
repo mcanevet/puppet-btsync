@@ -1,6 +1,7 @@
 # == Class: btsync::repo
 #
-#   Configure yeasoft repository for Debian or Ubuntu.
+#   Configure yeasoft repository for Debian or Ubuntu. See README.md for more
+#   details.
 #
 # === Author
 #

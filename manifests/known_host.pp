@@ -1,40 +1,7 @@
 # == Define: btsync::known_host
 #
 #   Add a known host to the list of known hosts of a shared folder.
-#
-# === Parameters
-#
-# [*secret*]
-#   The secret of the shared folder.
-#
-# [*host*]
-#   The host to add. Defaults to namevar.
-#
-# [*instance*]
-#   The instance to use. Defaults to the instance of the shared folder of the
-#   secret passed as parameter
-#
-# === Composite namevars
-#
-# The define supports composite namevars in order to easily specify the entry
-# you want to manage. The format for composite namevars is:
-#
-#  <secret> on <host>
-#
-# === Examples
-#
-#  btsync::known_host { 'my known host':
-#    secret => 'MY_SECRET_1',
-#    host   => '192.168.1.2:44444',
-#  }
-#
-#  equals to
-#
-#  btsync::known_host { 'MY_SECRET_1 on 192.168.1.2:44444': }
-#
-#  with an array:
-#
-#  btsync::known_host { prefix(['192.168.1.2:44444'], 'MY_SECRET_1 on '): }
+#   See README.md for more details.
 #
 # === Author
 #

@@ -1,35 +1,6 @@
 # == Class: btsync
 #
-# Install an manage BitTorrent Sync
-#
-# === Parameters
-#
-# [*version*]
-#   The package version to install
-#
-# [*enable*]
-#   Should the service be enabled during boot time?
-#
-# [*start*]
-#   Should the service be started by Puppet
-#
-# [*instances*]
-#   Instances to run
-#
-# === Examples
-#
-#  class { 'btsync':
-#    instances => {
-#      btsync => {
-#        storage_path => '/home/btsync/.sync',
-#        webui        => {
-#          listen   => '0.0.0.0:8888',
-#          login    => 'btsync',
-#          password => 'password',
-#        }
-#      }
-#    }
-#  }
+# Install an manage BitTorrent Sync. See README.md for more details.
 #
 # === Author
 #
