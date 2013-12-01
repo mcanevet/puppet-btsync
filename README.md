@@ -28,7 +28,23 @@ Launching an instances
 
 Declare an instance:
 
-    btsync::instance { 'user':
+```puppet
+btsync::instance { 'user':
+  storage_path => '/home/user/.sync',
+  webui        => {
+    listen   => '0.0.0.0:8888',
+    login    => 'admin',
+    password => 'password',
+  }
+}
+```
+
+You can also do it in one step:
+
+```puppet
+class { 'btsync':
+  instances => {
+    user => {
       storage_path => '/home/user/.sync',
       webui        => {
         listen   => '0.0.0.0:8888',
@@ -36,36 +52,28 @@ Declare an instance:
         password => 'password',
       }
     }
-
-You can also do it in one step:
-
-    class { 'btsync':
-      instances => {
-        user => {
-          storage_path => '/home/user/.sync',
-          webui        => {
-            listen   => '0.0.0.0:8888',
-            login    => 'admin',
-            password => 'password',
-          }
-        }
-      }
-    }
+  }
+}
+```
 
 You can also store you configuration in hiera:
 
-    ---
-    btsync::instances:
-      user:
-        storage_path: /home/user/.sync
-        webui:
-          listen: 0.0.0.0:8888
-          login: admin
-          password: password
+```yaml
+---
+btsync::instances:
+  user:
+    storage_path: /home/user/.sync
+    webui:
+      listen: 0.0.0.0:8888
+      login: admin
+      password: password
+```
 
 And simply include the `btsync` class if you have puppet 3+:
 
-    include btsync
+```puppet
+include btsync
+```
 
 Shared folders
 --------------
