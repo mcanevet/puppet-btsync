@@ -13,7 +13,9 @@ Pre-requirement
 
 If you don't already have a btsync package repository, you can include btsync::repo class, that will configure yeasoft repository for Debian and Ubuntu:
 
-    include btsync::repo
+```puppet
+include btsync::repo
+```
 
 
 Usage
@@ -21,7 +23,9 @@ Usage
 
 Just include the `btsync` class:
 
-    include btsync
+```puppet
+include btsync
+```
 
 Launching an instances
 ----------------------
@@ -80,44 +84,50 @@ Shared folders
 
 You can also declare a shared folder:
 
-    btsync::shared_folder { 'MY_SECRET_1':
-      instance => 'user',
-      dir      => '/home/user/bittorrent/sync_test',
-    }
+```puppet
+btsync::shared_folder { 'MY_SECRET_1':
+  instance => 'user',
+  dir      => '/home/user/bittorrent/sync_test',
+}
+```
 
 Or in in one step:
 
-    class { 'btsync':
-      instances => {
-        user => {
-          storage_path => '/home/user/.sync',
-          webui        => {
-            listen   => '0.0.0.0:8888',
-            login    => 'admin',
-            password => 'password',
-          },
-          shared_folders => {
-            'MY_SECRET_1' => {
-              dir => '/home/user/bittorrent/sync_test',
-            }
-          }
+```puppet
+class { 'btsync':
+  instances => {
+    user => {
+      storage_path => '/home/user/.sync',
+      webui        => {
+        listen   => '0.0.0.0:8888',
+        login    => 'admin',
+        password => 'password',
+      },
+      shared_folders => {
+        'MY_SECRET_1' => {
+          dir => '/home/user/bittorrent/sync_test',
         }
       }
     }
+  }
+}
+```
 
 And of course in hiera:
 
-    ---
-    btsync::instances:
-      user:
-        storage_path: /home/user/.sync
-        webui:
-          listen: 0.0.0.0:8888
-          login: admin
-          password: password
-        shared_folders:
-          MY_SECRET_1:
-            dir: /home/user/bittorrent/sync_test
+```yaml
+---
+btsync::instances:
+  user:
+    storage_path: /home/user/.sync
+    webui:
+      listen: 0.0.0.0:8888
+      login: admin
+      password: password
+    shared_folders:
+      MY_SECRET_1:
+        dir: /home/user/bittorrent/sync_test
+```
 
 Known hosts:
 ------------
@@ -126,46 +136,52 @@ A Btsync::Known_host resource is automatically exported for the given secret key
 
 You can also declare explicitely a known host resource for a given secret key:
 
-    btsync::known_host { '192.168.1.2:44444':
-      secret   => 'MY_SECRET_1',
-      instance => 'btsync',
-    }
+```puppet
+btsync::known_host { '192.168.1.2:44444':
+  secret   => 'MY_SECRET_1',
+  instance => 'btsync',
+}
+```
 
 Or in one step:
 
-    class { 'btsync':
-      instances => {
-        user => {
-          storage_path => '/home/user/.sync',
-          webui        => {
-            listen   => '0.0.0.0:8888',
-            login    => 'admin',
-            password => 'password',
-          },
-          shared_folders => {
-            'MY_SECRET_1' => {
-              dir         => '/home/user/bittorrent/sync_test',
-              known_hosts => ['192.168.1.2:44444'],
-            }
-          }
+```puppet
+class { 'btsync':
+  instances => {
+    user => {
+      storage_path => '/home/user/.sync',
+      webui        => {
+        listen   => '0.0.0.0:8888',
+        login    => 'admin',
+        password => 'password',
+      },
+      shared_folders => {
+        'MY_SECRET_1' => {
+          dir         => '/home/user/bittorrent/sync_test',
+          known_hosts => ['192.168.1.2:44444'],
         }
       }
     }
+  }
+}
+```
 
 Or with hiera:
 
-    ---
-    btsync::instances:
-      user:
-        storage_path: /home/user/.sync
-        webui:
-          listen: 0.0.0.0:8888
-          login: admin
-          password: password
-        shared_folders:
-          MY_SECRET_1:
-            dir: /home/user/bittorrent/sync_test
-            known_hosts: ['192.168.1.2:44444']
+```yaml
+---
+btsync::instances:
+  user:
+    storage_path: /home/user/.sync
+    webui:
+      listen: 0.0.0.0:8888
+      login: admin
+      password: password
+    shared_folders:
+      MY_SECRET_1:
+        dir: /home/user/bittorrent/sync_test
+        known_hosts: ['192.168.1.2:44444']
+```
 
 The define also supports composite namevars in order to easily specify the
 entry you want to manage. The format for composite namevars is:
@@ -197,29 +213,31 @@ btsync::known_host { prefix(['192.168.1.2:44444'], 'MY_SECRET_1 on '): }
 
 This example configures an instance like the sample configuration of BitTorrent Sync 1.1.48:
 
-    ---
-    btsync::instances:
-      user:
-        device_name: My Sync Device
-        listening_port: 0
-        storage_path: /home/user/.sync
-        check_for_updates: true
-        use_upnp: true
-        download_limit: 0
-        upload_limit: 0
-        webui:
-          listen: 0.0.0.0:8888
-          login: admin
-          password: password
-        shared_folders:
-          MY_SECRET_1:
-            dir: /home/user/bittorrent/sync_test
-            use_relay_server: true
-            use_tracker: true
-            use_dht: true
-            search_lan: true
-            use_sync_trash: true
-            known_hosts: ['192.168.1.2:44444']
+```yaml
+---
+btsync::instances:
+  user:
+    device_name: My Sync Device
+    listening_port: 0
+    storage_path: /home/user/.sync
+    check_for_updates: true
+    use_upnp: true
+    download_limit: 0
+    upload_limit: 0
+    webui:
+      listen: 0.0.0.0:8888
+      login: admin
+      password: password
+    shared_folders:
+      MY_SECRET_1:
+        dir: /home/user/bittorrent/sync_test
+        use_relay_server: true
+        use_tracker: true
+        use_dht: true
+        search_lan: true
+        use_sync_trash: true
+        known_hosts: ['192.168.1.2:44444']
+```
 
 Reference
 ---------
