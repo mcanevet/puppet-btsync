@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'btsync', :type => 'class' do
+describe 'btsync' do
 
   context 'default parameters' do
     let(:params) { { } }

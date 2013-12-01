@@ -13,8 +13,11 @@
 # Copyright 2013 Mickaël Canévet, unless otherwise noted.
 #
 class btsync::config {
+  if ! defined(Class['btsync']) {
+    fail 'You should not declare this class explicitely, it should be done by Class[btsync].'
+  }
   file{'/etc/btsync':
-    ensure  => 'directory',
+    ensure  => directory,
     owner   => 'root',
     group   => 'root',
     mode    => '0755',

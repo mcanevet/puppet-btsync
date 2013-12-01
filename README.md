@@ -187,7 +187,7 @@ The define also supports composite namevars in order to easily specify the
 entry you want to manage. The format for composite namevars is:
 
 ```puppet
-  <secret> on <host>
+<secret> on <host>
 ```
 
 Example:
