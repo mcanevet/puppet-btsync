@@ -65,22 +65,19 @@ define btsync::shared_folder(
   [',
     }
 
-    # FIXME: when a concat_build contains no fragment but only a concat_build
-    # The "fragments" directory is not created and it fails with "No fragments
-    # specified for group", so we have to:
-    # - create the directory explicitely,
-    # - use "quiet => true" for concat_build
-    # This is quite ugly though...
-    file { "/var/lib/puppet/concat/fragments/btsync_${instance}_json_shared_folders_json":
-      ensure => directory,
-    }
-    ->
     concat_build { "btsync_${instance}_json_shared_folders_json":
       parent_build   => "btsync_${instance}_json_shared_folders",
       target         => "/var/lib/puppet/concat/fragments/btsync_${instance}_json_shared_folders/02",
       file_delimiter => ',',
       append_newline => false,
-      quiet          => true,
+    }
+
+    # FIXME: when a concat_build contains no fragment but only a concat_build(s)
+    # The "fragments" directory is not created and it fails with "No fragments
+    # specified for group", so we have to create a fake concat_fragment.
+    # This is quite ugly though...
+    concat_fragment { "btsync_${instance}_json_shared_folders_json+ZZZZ":
+      content => '{}',
     }
 
     concat_fragment { "btsync_${instance}_json_shared_folders+99":
