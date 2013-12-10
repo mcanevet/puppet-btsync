@@ -43,6 +43,10 @@ define btsync::instance(
   $sync_trash_ttl = undef,
 ) {
 
+  Class['btsync::install'] ->
+  Btsync::Instance[$title] ~>
+  Class['btsync::service']
+
   validate_absolute_path($conffile)
 
   if $storage_path != undef {
