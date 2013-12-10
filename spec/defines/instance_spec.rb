@@ -1,6 +1,10 @@
 require 'spec_helper'
 
-describe 'btsync::instance', :type => :define do
+describe 'btsync::instance' do
+
+  let :pre_condition do
+    "class {'btsync': }"
+  end
 
   let(:title) { 'foo' }
   
