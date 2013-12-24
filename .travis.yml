@@ -1,18 +1,18 @@
 language: ruby
 bundler_args: --without development
-script: "bundle exec rake spec SPEC_OPTS='--format documentation'"
+script:
+  - bundle exec rake spec SPEC_OPTS='--format documentation'
+  - bundle exec rake lint
 rvm:
   - 1.9.3
   - 2.0.0
   - ruby-head
-script:
-  - "rake lint"
-  - "rake spec SPEC_OPTS='--format documentation'"
 env:
   - PUPPET_VERSION="~> 2.7.0"
   - PUPPET_VERSION="~> 3.1.0"
   - PUPPET_VERSION="~> 3.2.0"
   - PUPPET_VERSION="~> 3.3.0"
+  - PUPPET_VERSION="~> 3.4.0"
 matrix:
   allow_failures:
     - rvm: ruby-head
