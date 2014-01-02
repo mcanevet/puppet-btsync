@@ -28,7 +28,7 @@ define btsync::instance(
     listen   => undef,
     login    => undef,
     password => undef,
-    api_key => undef,
+    api_key  => undef,
   },
   $shared_folders = {},
   $disk_low_priority = undef,

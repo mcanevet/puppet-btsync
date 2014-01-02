@@ -337,6 +337,9 @@ Web ui login.
 ####`webui['password']`
 Web ui password.
 
+####`webui['api_key']`
+Web ui API Key (Beta)
+
 ####`shared_folders`
 Hash containing shared folders resources.
 
