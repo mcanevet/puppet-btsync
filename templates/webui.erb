@@ -2,7 +2,9 @@
 <%- if @webui['listen'] -%>
     "listen": "<%= @webui['listen'] %>"<%- if @webui['login'] -%>,
     "login": "<%= @webui['login'] %>",
-    "password": "<%= @webui['password'] %>"
+    "password": "<%= @webui['password'] %>"<%- if@webui['api_key'] -%>,
+    "api_key": "<%= @webui['api_key'] %>"
+<%- end -%>
 <%- end -%>
 <%- end -%>
   }
