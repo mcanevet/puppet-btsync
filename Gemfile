@@ -1,8 +1,15 @@
 source 'https://rubygems.org'
  
-puppetversion = ENV['PUPPET_VERSION']
-gem 'puppet', puppetversion, :require => false
-gem 'puppet-lint'
-gem 'rspec-puppet'
-gem 'puppetlabs_spec_helper', '>= 0.4.0'
-gem 'hiera-puppet-helper'
+group :development, :test do
+  gem 'puppetlabs_spec_helper', :require => false
+  gem 'rspec-puppet',           :require => false
+  gem 'serverspec',             :require => false
+  gem 'beaker-rspec',           :require => false
+  gem 'puppet-lint',            :require => false
+end
+
+if puppetversion = ENV['PUPPET_GEM_VERSION']
+  gem 'puppet', puppetversion, :require => false
+else
+  gem 'puppet', :require => false
+end
