@@ -72,7 +72,7 @@ define btsync::instance(
 
   concat_build { "btsync_${name}_json":
     parent_build   => "btsync_${name}",
-    target         => "/var/lib/puppet/concat/fragments/btsync_${name}/03",
+    target         => "${btsync::concat_path}/fragments/btsync_${name}/03",
     file_delimiter => ',',
     append_newline => false,
   }
