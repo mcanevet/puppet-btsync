@@ -2,29 +2,35 @@ require 'spec_helper'
 
 describe 'btsync' do
 
+  let (:facts) { {
+    :puppet_vardir => '/var/lib/puppet',
+  } }
+
   context 'when enable is not a boolean' do
     let(:params) { {
       :enable => 'foo',
     } }
-    it { expect { should contain_class('btsync') }.to raise_error(Puppet::Error, /"foo" is not a boolean/) }
+    it { expect { should compile }.to raise_error(Puppet::Error, /"foo" is not a boolean/) }
   end
 
   context 'when start is not a boolean' do
     let(:params) { {
       :start => 'foo',
     } }
-    it { expect { should contain_class('btsync') }.to raise_error(Puppet::Error, /"foo" is not a boolean/) }
+    it { expect { should compile }.to raise_error(Puppet::Error, /"foo" is not a boolean/) }
   end
 
   context 'when instances is not a hash' do
     let(:params) { {
       :instances => 'foo',
     } }
-    it { expect { should create_class('btsync') }.to raise_error(Puppet::Error, /"foo" is not a Hash/) }
+    it { expect { should compile }.to raise_error(Puppet::Error, /"foo" is not a Hash/) }
   end
 
   context 'when using default parameters' do
     let(:params) { { } }
+
+    it { should compile.with_all_deps }
 
     it { should create_class('btsync')\
       .with_version('present')\
@@ -61,6 +67,8 @@ describe 'btsync' do
       :version => '1.2.3',
     } }
 
+    it { should compile.with_all_deps }
+
     it { should create_class('btsync')\
       .with_version('1.2.3')\
       .with_enable(true)\
@@ -77,6 +85,8 @@ describe 'btsync' do
       :enable => false,
     } }
 
+    it { should compile.with_all_deps }
+
     it { should contain_service('btsync').with({
       :ensure => :running,
       :enable => false,
@@ -87,6 +97,8 @@ describe 'btsync' do
     let(:params) { {
       :start => false,
     } }
+
+    it { should compile.with_all_deps }
 
     it { should contain_service('btsync').with({
       :ensure => :stopped,
@@ -100,6 +112,8 @@ describe 'btsync' do
         'btsync' => { }
       }
     } }
+
+    it { should compile.with_all_deps }
 
     it { should create_class('btsync')\
       .with_version('present')\
@@ -119,6 +133,8 @@ describe 'btsync' do
         'btsync2' => { },
       }
     } }
+
+    it { should compile.with_all_deps }
 
     it { should create_class('btsync')\
       .with_version('present')\

@@ -24,7 +24,7 @@ define btsync::shared_folder(
   if ! defined(Concat_build["btsync_${instance}_json_shared_folders"]) {
     concat_build { "btsync_${instance}_json_shared_folders":
       parent_build => "btsync_${instance}_json",
-      target       => "${btsync::concat_path}/fragments/btsync_${instance}_json/03",
+      target       => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json/03",
     }
 
     concat_fragment { "btsync_${instance}_json_shared_folders+01":
@@ -35,7 +35,7 @@ define btsync::shared_folder(
 
     concat_build { "btsync_${instance}_json_shared_folders_json":
       parent_build   => "btsync_${instance}_json_shared_folders",
-      target         => "${btsync::concat_path}/fragments/btsync_${instance}_json_shared_folders/02",
+      target         => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders/02",
       file_delimiter => ',',
       append_newline => false,
     }
@@ -55,7 +55,7 @@ define btsync::shared_folder(
 
   concat_build { "btsync_${instance}_json_shared_folders_json_${secret}":
     parent_build => "btsync_${instance}_json_shared_folders_json",
-    target       => "${btsync::concat_path}/fragments/btsync_${instance}_json_shared_folders_json/${secret}",
+    target       => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders_json/${secret}",
   }
 
   concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}+01":
@@ -64,7 +64,7 @@ define btsync::shared_folder(
 
   concat_build { "btsync_${instance}_json_shared_folders_json_${secret}_json":
     parent_build   => "btsync_${instance}_json_shared_folders_json_${secret}",
-    target         => "${btsync::concat_path}/fragments/btsync_${instance}_json_shared_folders_json_${secret}/02",
+    target         => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders_json_${secret}/02",
     file_delimiter => ',',
     append_newline => false,
   }

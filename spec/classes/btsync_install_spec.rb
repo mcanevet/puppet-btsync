@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'btsync::install' do
 
   context 'when not declaring Class[btsync]' do
-    it { expect { should create_class('btsync::install')}.to raise_error(Puppet::Error, /You should not declare this class explicitely, it should be done by Class\[btsync\]./) }
+    it { expect { should compile }.to raise_error(Puppet::Error, /You should not declare this class explicitely, it should be done by Class\[btsync\]./) }
   end
 
   context 'when a parameter is passed' do
@@ -11,7 +11,7 @@ describe 'btsync::install' do
       :foo => 'bar',
     } }
 
-    it { expect { should create_class('btsync::install')}.to raise_error(Puppet::Error, /Invalid parameter foo/) }
+    it { expect { should compile }.to raise_error(Puppet::Error, /Invalid parameter foo/) }
   end
 
 end
