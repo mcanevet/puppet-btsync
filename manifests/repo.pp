@@ -12,6 +12,7 @@
 # Copyright 2013 Mickaël Canévet, unless otherwise noted.
 #
 class btsync::repo {
+  include ::apt
   case $::operatingsystem {
     Debian: {
       apt::source { 'btsync':
