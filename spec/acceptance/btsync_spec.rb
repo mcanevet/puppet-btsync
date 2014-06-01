@@ -53,10 +53,47 @@ describe 'btsync class' do
         }
       EOS
 
+      # Run it twice and test for idempotency
+      apply_manifest(pp, :catch_failures => true)
+      expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+
+    end
+
+  end
+
+  describe 'without shared_folders' do
+
+    it 'should install btsync' do
+      pp = <<-EOS
+        class { 'btsync::repo': } ->
+        class { 'btsync':
+          instances => {
+            vagrant => {
+              device_name       => 'My Sync Device',
+              listening_port    => 0,
+              storage_path      => '/home/vagrant/.sync',
+              check_for_updates => false,
+              use_upnp          => true,
+              download_limit    => 0,
+              upload_limit      => 0,
+              webui             => {
+                listen   => '0.0.0.0:8888',
+                login    => 'admin',
+                password => 'password',
+              },
+            }
+          }
+        }
+      EOS
 
       # Run it twice and test for idempotency
       apply_manifest(pp, :catch_failures => true)
       expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+
+    end
+
+    describe port(8888) do
+      it { should be_listening }
     end
 
   end
