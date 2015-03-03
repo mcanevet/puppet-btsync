@@ -14,7 +14,7 @@
 class btsync::repo {
   include ::apt
   case $::operatingsystem {
-    Debian: {
+    'Debian': {
       apt::source { 'btsync':
         location          => 'http://debian.yeasoft.net/btsync',
         release           => $::lsbdistcodename,
@@ -25,7 +25,7 @@ class btsync::repo {
         include_src       => true,
       }
     }
-    Ubuntu: {
+    'Ubuntu': {
       apt::ppa { 'ppa:tuxpoldo/btsync': }
     }
     default: {
