@@ -96,7 +96,9 @@ define btsync::instance(
   }
 
   if $folder_rescan_interval != undef {
-    validate_re($folder_rescan_interval, '\d+')
+    if !is_integer($folder_rescan_interval) {
+      fail 'folder_rescan_interval does not match integer'
+    }
     concat_fragment { "btsync_${name}_json+folder_rescan_interval":
       content => "
   \"folder_rescan_interval\": ${folder_rescan_interval}",
@@ -120,7 +122,9 @@ define btsync::instance(
   }
 
   if $max_file_size_diff_for_patching != undef {
-    validate_re($max_file_size_diff_for_patching, '\d+')
+    if !is_integer($max_file_size_diff_for_patching) {
+      fail 'max_file_size_diff_for_patching does not match integer'
+    }
     concat_fragment { "btsync_${name}_json+max_file_size_diff_for_patching":
       content => "
   \"max_file_size_diff_for_patching\": ${max_file_size_diff_for_patching}",
@@ -128,7 +132,9 @@ define btsync::instance(
   }
 
   if $max_file_size_for_versioning != undef {
-    validate_re($max_file_size_for_versioning, '\d+')
+    if !is_integer($max_file_size_for_versioning) {
+      fail 'max_file_size_for_versioning does not match integer'
+    }
     concat_fragment { "btsync_${name}_json+max_file_size_for_versioning":
       content => "
   \"max_file_size_for_versioning\": ${max_file_size_for_versioning}",
@@ -144,7 +150,9 @@ define btsync::instance(
   }
 
   if $send_buf_size != undef {
-    validate_re($send_buf_size, '\d+')
+    if !is_integer($send_buf_size) {
+      fail 'send_buf_size does not match integer'
+    }
     concat_fragment { "btsync_${name}_json+send_buf_size":
       content => "
   \"send_buf_size\": ${send_buf_size}",
@@ -152,7 +160,9 @@ define btsync::instance(
   }
 
   if $recv_buf_size != undef {
-    validate_re($recv_buf_size, '\d+')
+    if !is_integer($recv_buf_size) {
+      fail 'recv_buf_size does not match integer'
+    }
     concat_fragment { "btsync_${name}_json+recv_buf_size":
       content => "
   \"recv_buf_size\": ${recv_buf_size}",
@@ -160,7 +170,9 @@ define btsync::instance(
   }
 
   if $sync_max_time_diff != undef {
-    validate_re($sync_max_time_diff, '\d+')
+    if !is_integer($sync_max_time_diff) {
+      fail 'sync_max_time_diff does not match integer'
+    }
     concat_fragment { "btsync_${name}_json+sync_max_time_diff":
       content => "
   \"sync_max_time_diff\": ${sync_max_time_diff}",
@@ -168,7 +180,9 @@ define btsync::instance(
   }
 
   if $sync_trash_ttl != undef {
-    validate_re($sync_trash_ttl, '\d+')
+    if !is_integer($sync_trash_ttl) {
+      fail 'sync_trash_ttl does not match integer'
+    }
     concat_fragment { "btsync_${name}_json+sync_trash_ttl":
       content => "
   \"sync_trash_ttl\": ${sync_trash_ttl}",
