@@ -3,7 +3,7 @@
   "version": "0.5.3",
   "author": "Mickaël Canévet",
   "summary": "Puppet btsync module",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/mcanevet/puppet-btsync",
   "project_page": "https://github.com/mcanevet/puppet-btsync",
   "issues_url": "https://github.com/mcanevet/puppet-btsync/issues",
