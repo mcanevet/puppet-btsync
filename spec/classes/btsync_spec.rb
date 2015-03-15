@@ -10,41 +10,41 @@ describe 'btsync' do
     let(:params) { {
       :enable => 'foo',
     } }
-    it { expect { should compile }.to raise_error(Puppet::Error, /"foo" is not a boolean/) }
+    it { expect { is_expected.to compile }.to raise_error(/"foo" is not a boolean/) }
   end
 
   context 'when start is not a boolean' do
     let(:params) { {
       :start => 'foo',
     } }
-    it { expect { should compile }.to raise_error(Puppet::Error, /"foo" is not a boolean/) }
+    it { expect { is_expected.to compile }.to raise_error(/"foo" is not a boolean/) }
   end
 
   context 'when instances is not a hash' do
     let(:params) { {
       :instances => 'foo',
     } }
-    it { expect { should compile }.to raise_error(Puppet::Error, /"foo" is not a Hash/) }
+    it { expect { is_expected.to compile }.to raise_error(/"foo" is not a Hash/) }
   end
 
   context 'when using default parameters' do
     let(:params) { { } }
 
-    it { should compile.with_all_deps }
+    it { is_expected.to compile.with_all_deps }
 
-    it { should create_class('btsync')\
+    it { is_expected.to create_class('btsync')\
       .with_version('present')\
       .with_enable(true)\
       .with_start(true)\
       .with_instances({}) }
 
-    it { should contain_class('btsync::install') }
-    it { should contain_package('btsync').with({
+    it { is_expected.to contain_class('btsync::install') }
+    it { is_expected.to contain_package('btsync').with({
       :ensure => :present,
     })}
 
-    it { should contain_class('btsync::config') }
-    it { should contain_file('/etc/btsync').with({
+    it { is_expected.to contain_class('btsync::config') }
+    it { is_expected.to contain_file('/etc/btsync').with({
       :ensure  => :directory,
       :owner   => 'root',
       :group   => 'root',
@@ -54,8 +54,8 @@ describe 'btsync' do
       :force   => true,
     })}
 
-    it { should contain_class('btsync::service') }
-    it { should contain_service('btsync').with({
+    it { is_expected.to contain_class('btsync::service') }
+    it { is_expected.to contain_service('btsync').with({
       :ensure => :running,
       :enable => true,
     })}
@@ -67,15 +67,15 @@ describe 'btsync' do
       :version => '1.2.3',
     } }
 
-    it { should compile.with_all_deps }
+    it { is_expected.to compile.with_all_deps }
 
-    it { should create_class('btsync')\
+    it { is_expected.to create_class('btsync')\
       .with_version('1.2.3')\
       .with_enable(true)\
       .with_start(true)\
       .with_instances({}) }
 
-    it { should contain_package('btsync').with({
+    it { is_expected.to contain_package('btsync').with({
       :ensure => '1.2.3',
     })}
   end
@@ -85,9 +85,9 @@ describe 'btsync' do
       :enable => false,
     } }
 
-    it { should compile.with_all_deps }
+    it { is_expected.to compile.with_all_deps }
 
-    it { should contain_service('btsync').with({
+    it { is_expected.to contain_service('btsync').with({
       :ensure => :running,
       :enable => false,
     })}
@@ -98,9 +98,9 @@ describe 'btsync' do
       :start => false,
     } }
 
-    it { should compile.with_all_deps }
+    it { is_expected.to compile.with_all_deps }
 
-    it { should contain_service('btsync').with({
+    it { is_expected.to contain_service('btsync').with({
       :ensure => :stopped,
       :enable => true,
     })}
@@ -113,9 +113,9 @@ describe 'btsync' do
       }
     } }
 
-    it { should compile.with_all_deps }
+    it { is_expected.to compile.with_all_deps }
 
-    it { should create_class('btsync')\
+    it { is_expected.to create_class('btsync')\
       .with_version('present')\
       .with_enable(true)\
       .with_start(true)\
@@ -123,7 +123,7 @@ describe 'btsync' do
         'btsync' => { },
       }) }
 
-    it { should contain_btsync__instance('btsync') }
+    it { is_expected.to contain_btsync__instance('btsync') }
   end
 
   context 'when specifying multiple instances' do
@@ -134,9 +134,9 @@ describe 'btsync' do
       }
     } }
 
-    it { should compile.with_all_deps }
+    it { is_expected.to compile.with_all_deps }
 
-    it { should create_class('btsync')\
+    it { is_expected.to create_class('btsync')\
       .with_version('present')\
       .with_enable(true)\
       .with_start(true)\
@@ -144,8 +144,8 @@ describe 'btsync' do
         'btsync1' => { },
         'btsync2' => { },
       }) }
-    it { should contain_btsync__instance('btsync1') }
-    it { should contain_btsync__instance('btsync2') }
+    it { is_expected.to contain_btsync__instance('btsync1') }
+    it { is_expected.to contain_btsync__instance('btsync2') }
   end
 
 end

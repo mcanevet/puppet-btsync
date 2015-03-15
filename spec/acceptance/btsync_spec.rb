@@ -4,7 +4,7 @@ describe 'btsync class' do
 
   describe 'without parameter' do
 
-    it 'should install btsync' do
+    it 'is_expected.to install btsync' do
       pp = <<-EOS
         class { 'btsync::repo': } ->
         class { 'btsync': }
@@ -19,7 +19,7 @@ describe 'btsync class' do
 
   describe 'with sample configuration' do
 
-    it 'should install btsync' do
+    it 'is_expected.to install btsync' do
       pp = <<-EOS
         class { 'btsync::repo': } ->
         class { 'btsync':
@@ -63,7 +63,7 @@ describe 'btsync class' do
 
   describe 'without shared_folders' do
 
-    it 'should install btsync' do
+    it 'is_expected.to install btsync' do
       pp = <<-EOS
         class { 'btsync::repo': } ->
         class { 'btsync':
@@ -93,7 +93,7 @@ describe 'btsync class' do
     end
 
     describe port(8888) do
-      it { should be_listening }
+      it { is_expected.to be_listening }
     end
 
   end
