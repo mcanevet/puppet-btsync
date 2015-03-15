@@ -1,7 +1,12 @@
 ---
 language: ruby
+sudo: false
+cache: bundler
 bundler_args: --without system_tests
-script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
+script: 
+  - bundle exec rake validate
+  - bundle exec rake lint
+  - bundle exec rake spec SPEC_OPTS='--format documentation'"
 matrix:
   fast_finish: true
   include:
@@ -11,5 +16,7 @@ matrix:
     env: PUPPET_GEM_VERSION="~> 3.0"
   - rvm: 2.0.0
     env: PUPPET_GEM_VERSION="~> 3.0"
+  - rvm: 2.0.0
+    env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
 notifications:
   email: false
