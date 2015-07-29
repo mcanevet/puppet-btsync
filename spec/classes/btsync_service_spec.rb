@@ -11,7 +11,7 @@ describe 'btsync::service' do
       :foo => 'bar',
     } }
 
-    it { expect { is_expected.to compile }.to raise_error(/Invalid parameter foo/) }
+    it { expect { is_expected.to compile }.to raise_error(/Invalid parameter: 'foo'/) }
   end
 
 end
