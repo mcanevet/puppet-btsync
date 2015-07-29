@@ -1,6 +1,6 @@
 {
   "name": "mcanevet-btsync",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "author": "Mickaël Canévet",
   "summary": "Puppet btsync module",
   "license": "Apache-2.0",
