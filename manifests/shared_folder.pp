@@ -78,12 +78,6 @@ define btsync::shared_folder(
     content => template('btsync/shared_folder.erb'),
   }
 
-  $listening_port = getparam(Btsync::Instance[$instance], 'listening_port')
-  $host = $listening_port ? {
-    0       => $::ipaddress,
-    default => "${::ipaddress}:${listening_port}",
-  }
-
   $_known_hosts = prefix($known_hosts, "${secret} on ")
   btsync::known_host { $_known_hosts:
     secret   => $secret,
