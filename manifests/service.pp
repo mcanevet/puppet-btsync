@@ -16,7 +16,10 @@ class btsync::service {
   if ! defined(Class['btsync']) {
     fail 'You should not declare this class explicitely, it should be done by Class[btsync].'
   }
-  $ensure = $::btsync::start ? { true => running, default => stopped }
+  $ensure = $::btsync::start ? {
+    true    => running,
+    default => stopped,
+  }
 
   service{'btsync':
     ensure => $ensure,

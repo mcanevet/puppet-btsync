@@ -21,8 +21,8 @@ class btsync(
   validate_bool($start)
   validate_hash($instances)
 
-  class{'btsync::install': } ->
-  class{'btsync::config': } ~>
-  class{'btsync::service': } ->
-  Class['btsync']
+  class{'::btsync::install': } ->
+  class{'::btsync::config': } ~>
+  class{'::btsync::service': } ->
+  Class['::btsync']
 }
