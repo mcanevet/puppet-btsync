@@ -54,44 +54,100 @@ define btsync::instance(
     validate_absolute_path($storage_path)
   }
 
-  concat_build { "btsync_${name}": }
-  ->
   file { $conffile:
     owner  => $user,
     group  => $group,
     mode   => '0400',
-    source => concat_output("btsync_${name}"),
   }
 
-  concat_fragment { "btsync_${name}+01":
-    content => template('btsync/yeasoft_initscript_header.erb'),
+  augeas_file { $conffile:
+    lens => 'Json.lns',
+    base => '/usr/share/doc/btsync-core/btsync.conf.sample',
   }
 
-  concat_fragment { "btsync_${name}+02":
-    content => '{',
+  Augeas {
+    incl => $conffile,
+    lens => 'Json.lns',
   }
 
-  concat_build { "btsync_${name}_json":
-    parent_build   => "btsync_${name}",
-    target         => "${::puppet_vardir}/concat/fragments/btsync_${name}/03",
-    file_delimiter => ',',
-    append_newline => false,
+  # Yeasoft's initscript header
+  augeas { "btsync_${name}_json+DAEMON_UID":
+    changes => "set // DAEMON_UID ${user}",
+  }
+  augeas { "btsync_${name}_json+DAEMON_GID":
+    changes => "set // DAEMON_GID ${group}",
+  }
+  augeas { "btsync_${name}_json+DAEMON_UMASK":
+    changes => "set // DAEMON_UMASK ${umask}",
   }
 
-  concat_fragment { "btsync_${name}_json+01":
-    content => template('btsync/global_preferences.erb'),
+  # Global preferences
+  if $device_name != undef {
+    augeas { "btsync_${name}_json+device_name":
+      changes => "set device_name ${device_name}",
+    }
+  }
+  if $listening_port != undef {
+    augeas { "btsync_${name}_json+listening_port":
+      changes => "set listening_port ${listening_port}",
+    }
+  }
+  if $storage_path != undef {
+    augeas { "btsync_${name}_json+storage_path":
+      changes => "set storage_path ${storage_path}",
+    }
+  }
+  if $pid_file != undef {
+    augeas { "btsync_${name}_json+pid_file":
+      changes => "set pid_file ${pid_file}",
+    }
+  }
+  if $check_for_updates != undef {
+    augeas { "btsync_${name}_json+check_for_updates":
+      changes => "set check_for_updates ${check_for_updates}",
+    }
+  }
+  if $use_upnp != undef {
+    augeas { "btsync_${name}_json+use_upnp":
+      changes => "set use_upnp ${use_upnp}",
+    }
+  }
+  if $download_limit != undef {
+    augeas { "btsync_${name}_json+download_limit":
+      changes => "set download_limit ${download_limit}",
+    }
+  }
+  if $upload_limit != undef {
+    augeas { "btsync_${name}_json+upload_limit":
+      changes => "set upload_limit ${upload_limit}",
+    }
   }
 
-  concat_fragment { "btsync_${name}_json+02":
-    content => template('btsync/webui.erb'),
+  # Web UI
+  if has_key($webui, 'listen') {
+    augeas { "btsync_${name}_json+webui/listen":
+      changes => "set webui/listen ${webui['listen']}",
+    }
+    if has_key($webui, 'login') {
+      augeas { "btsync_${name}_json+webui/login":
+        changes => "set webui/login ${webui['login']}",
+      }
+    }
+    augeas { "btsync_${name}_json+webui/password":
+      changes => "set webui/password ${webui['password']}",
+    }
+    if has_key($webui, 'api_key') {
+      augeas { "btsync_${name}_json+webui/api_key":
+        changes => "set webui/api_key ${webui['api_key']}",
+      }
+    }
   }
 
   # Advanced Preferences
   if $disk_low_priority != undef {
     validate_bool($disk_low_priority)
-    concat_fragment { "btsync_${name}_json+disk_low_priority":
-      content => "
-  \"disk_low_priority\": ${disk_low_priority}",
+    augeas { "btsync_${name}_json+disk_low_priority":
+      changes => "set disk_low_priority ${disk_low_priority}",
     }
   }
 
@@ -99,25 +155,22 @@ define btsync::instance(
     if !is_integer($folder_rescan_interval) {
       fail 'folder_rescan_interval does not match integer'
     }
-    concat_fragment { "btsync_${name}_json+folder_rescan_interval":
-      content => "
-  \"folder_rescan_interval\": ${folder_rescan_interval}",
+    augeas { "btsync_${name}_json+folder_rescan_interval":
+      changes => "set folder_rescan_interval ${folder_rescan_interval}",
     }
   }
 
   if $lan_encrypt_data != undef {
     validate_bool($lan_encrypt_data)
-    concat_fragment { "btsync_${name}_json+lan_encrypt_data":
-      content => "
-  \"lan_encrypt_data\": ${lan_encrypt_data}",
+    augeas { "btsync_${name}_json+lan_encrypt_data":
+      changes => "set lan_encrypt_data ${lan_encrypt_data}",
     }
   }
 
   if $lan_use_tcp != undef {
     validate_bool($lan_use_tcp)
-    concat_fragment { "btsync_${name}_json+lan_use_tcp":
-      content => "
-  \"lan_use_tcp\": ${lan_use_tcp}",
+    augeas { "btsync_${name}_json+lan_use_tcp":
+      changes => "set lan_use_tcp ${lan_use_tcp}",
     }
   }
 
@@ -125,9 +178,8 @@ define btsync::instance(
     if !is_integer($max_file_size_diff_for_patching) {
       fail 'max_file_size_diff_for_patching does not match integer'
     }
-    concat_fragment { "btsync_${name}_json+max_file_size_diff_for_patching":
-      content => "
-  \"max_file_size_diff_for_patching\": ${max_file_size_diff_for_patching}",
+    augeas { "btsync_${name}_json+max_file_size_diff_for_patching":
+      changes => "set max_file_size_diff_for_patching ${max_file_size_diff_for_patching}",
     }
   }
 
@@ -135,17 +187,15 @@ define btsync::instance(
     if !is_integer($max_file_size_for_versioning) {
       fail 'max_file_size_for_versioning does not match integer'
     }
-    concat_fragment { "btsync_${name}_json+max_file_size_for_versioning":
-      content => "
-  \"max_file_size_for_versioning\": ${max_file_size_for_versioning}",
+    augeas { "btsync_${name}_json+max_file_size_for_versioning":
+      changes => "set max_file_size_for_versioning ${max_file_size_for_versioning}",
     }
   }
 
   if $rate_limit_local_peers != undef {
     validate_bool($rate_limit_local_peers)
-    concat_fragment { "btsync_${name}_json+rate_limit_local_peers":
-      content => "
-  \"rate_limit_local_peers\": ${rate_limit_local_peers}",
+    augeas { "btsync_${name}_json+rate_limit_local_peers":
+      changes => "set rate_limit_local_peers ${rate_limit_local_peers}",
     }
   }
 
@@ -153,9 +203,8 @@ define btsync::instance(
     if !is_integer($send_buf_size) {
       fail 'send_buf_size does not match integer'
     }
-    concat_fragment { "btsync_${name}_json+send_buf_size":
-      content => "
-  \"send_buf_size\": ${send_buf_size}",
+    augeas { "btsync_${name}_json+send_buf_size":
+      changes => "set send_buf_size ${send_buf_size}",
     }
   }
 
@@ -163,9 +212,8 @@ define btsync::instance(
     if !is_integer($recv_buf_size) {
       fail 'recv_buf_size does not match integer'
     }
-    concat_fragment { "btsync_${name}_json+recv_buf_size":
-      content => "
-  \"recv_buf_size\": ${recv_buf_size}",
+    augeas { "btsync_${name}_json+recv_buf_size":
+      changes => "set recv_buf_size ${recv_buf_size}",
     }
   }
 
@@ -173,9 +221,8 @@ define btsync::instance(
     if !is_integer($sync_max_time_diff) {
       fail 'sync_max_time_diff does not match integer'
     }
-    concat_fragment { "btsync_${name}_json+sync_max_time_diff":
-      content => "
-  \"sync_max_time_diff\": ${sync_max_time_diff}",
+    augeas { "btsync_${name}_json+sync_max_time_diff":
+      changes => "set sync_max_time_diff ${sync_max_time_diff}",
     }
   }
 
@@ -183,14 +230,9 @@ define btsync::instance(
     if !is_integer($sync_trash_ttl) {
       fail 'sync_trash_ttl does not match integer'
     }
-    concat_fragment { "btsync_${name}_json+sync_trash_ttl":
-      content => "
-  \"sync_trash_ttl\": ${sync_trash_ttl}",
+    augeas { "btsync_${name}_json+sync_trash_ttl":
+      changes => "set sync_trash_ttl ${sync_trash_ttl}",
     }
-  }
-
-  concat_fragment { "btsync_${name}+99":
-    content => '}',
   }
 
   create_resources(

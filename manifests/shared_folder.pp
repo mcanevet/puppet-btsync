@@ -21,61 +21,31 @@ define btsync::shared_folder(
   $use_sync_trash = true,
   $known_hosts = [],
 ) {
-  if ! defined(Concat_build["btsync_${instance}_json_shared_folders"]) {
-    concat_build { "btsync_${instance}_json_shared_folders":
-      parent_build => "btsync_${instance}_json",
-      target       => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json/03",
-    }
-
-    concat_fragment { "btsync_${instance}_json_shared_folders+01":
-      content => '
-  "shared_folders":
-  [',
-    }
-
-    concat_build { "btsync_${instance}_json_shared_folders_json":
-      parent_build   => "btsync_${instance}_json_shared_folders",
-      target         => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders/02",
-      file_delimiter => ',',
-      append_newline => false,
-    }
-
-    # FIXME: when a concat_build contains no fragment but only a concat_build(s)
-    # The "fragments" directory is not created and it fails with "No fragments
-    # specified for group", so we have to create a fake concat_fragment.
-    # This is quite ugly though...
-    concat_fragment { "btsync_${instance}_json_shared_folders_json+ZZZZ":
-      content => '{}',
-    }
-
-    concat_fragment { "btsync_${instance}_json_shared_folders+99":
-      content => '  ]',
-    }
+  Augeas {
+    incl => getparam(Btsync::Instance[$instance], 'conffile'),
+    lens => 'Json.lns',
   }
 
-  concat_build { "btsync_${instance}_json_shared_folders_json_${secret}":
-    parent_build => "btsync_${instance}_json_shared_folders_json",
-    target       => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders_json/${secret}",
+  augeas { "btsync_${instance}_json_shared_folders_json_${secret}_json+secret":
+    changes => "set secret ${secret}",
   }
-
-  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}+01":
-    content => '    {',
+  augeas { "btsync_${instance}_json_shared_folders_json_${secret}_json+dir":
+    changes => "set dir ${dir}",
   }
-
-  concat_build { "btsync_${instance}_json_shared_folders_json_${secret}_json":
-    parent_build   => "btsync_${instance}_json_shared_folders_json_${secret}",
-    target         => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders_json_${secret}/02",
-    file_delimiter => ',',
-    append_newline => false,
+  augeas { "btsync_${instance}_json_shared_folders_json_${secret}_json+use_relay_server":
+    changes => "set use_relay_server ${use_relay_server}",
   }
-
-  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}+99":
-    content => '    }
-',
+  augeas { "btsync_${instance}_json_shared_folders_json_${secret}_json+use_tracker":
+    changes => "set use_tracker ${use_tracker}",
   }
-
-  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}_json+01":
-    content => template('btsync/shared_folder.erb'),
+  augeas { "btsync_${instance}_json_shared_folders_json_${secret}_json+use_dht":
+    changes => "set use_dht ${use_dht}",
+  }
+  augeas { "btsync_${instance}_json_shared_folders_json_${secret}_json+search_lan":
+    changes => "set search_lan ${search_lan}",
+  }
+  augeas { "btsync_${instance}_json_shared_folders_json_${secret}_json+use_sync_trash":
+    changes => "set use_sync_trash ${use_sync_trash}",
   }
 
   $_known_hosts = prefix($known_hosts, "${secret} on ")

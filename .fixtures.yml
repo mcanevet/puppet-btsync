@@ -1,7 +1,7 @@
 fixtures:
   forge_modules:
     apt: 'puppetlabs-apt'
-    concat_native: 'theforeman-concat_native'
+    augeas_file: 'camptocamp-augeas_file'
     stdlib: 'puppetlabs-stdlib'
   symlinks:
     btsync: "#{source_dir}"
