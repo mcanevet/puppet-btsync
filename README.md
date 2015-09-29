@@ -308,7 +308,7 @@ Public name of the device. Defaults to $name.
 Port the daemon listen to. Defaults to 0 (random port).
 
 ####`storage_path`
-storage_path dir contains auxilliary app files if no storage_path field: .sync dir created in the directory where binary is located.
+storage_path dir contains auxiliary app files if no storage_path field: .sync dir created in the directory where binary is located.
 
 ####`pid_file`
 Override location of pid file.
