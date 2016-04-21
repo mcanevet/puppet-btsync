@@ -1,0 +1,48 @@
+    {}
+  ]
+<%-
+  options = []
+  if @disk_low_priority then
+    value = @disk_low_priority ? 'true' : 'false'
+    options.push('"disk_low_priority" : ' + value)
+  end
+  if @folder_rescan_interval then
+    options.push('"folder_rescan_interval" : ' + @folder_rescan_interval)
+  end
+  if @lan_encrypt_data then
+    value = @disk_low_priority ? 'true' : 'false'
+    options.push('"lan_encrypt_data" : ' + value)
+  end
+  if @lan_use_tcp then
+    value = @disk_low_priority ? 'true' : 'false'
+    options.push('"lan_use_tcp" : ' + value)
+  end
+  if @max_file_size_diff_for_patching then
+    options.push('"max_file_size_diff_for_patching" : ' + @max_file_size_diff_for_patching)
+  end
+  if @max_file_size_for_versioning then
+    options.push('"max_file_size_for_versioning" : ' + @max_file_size_for_versioning)
+  end
+  if @rate_limit_local_peers then
+    value = @disk_low_priority ? 'true' : 'false'
+    options.push('"rate_limit_local_peers" : ' + value)
+  end
+  if @send_buf_size then
+    options.push('"send_buf_size" : ' + @send_buf_size)
+  end
+  if @recv_buf_size then
+    options.push('"recv_buf_size" : ' + @recv_buf_size)
+  end
+  if @sync_max_time_diff then
+    options.push('"sync_max_time_diff" : ' + @sync_max_time_diff)
+  end
+  if @sync_trash_ttl then
+    options.push('"sync_trash_ttl" : ' + @sync_trash_ttl)
+  end
+-%>
+<%- if !options.empty? then -%>
+  ,
+
+  <%= options.join(",\n  ") %>
+<%- end -%>
+}
