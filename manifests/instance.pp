@@ -12,7 +12,7 @@
 #
 define btsync::instance(
   $user = $name,
-  $group = undef,
+  $group = btsync,
   $umask = undef,
   $conffile = "/etc/btsync/${name}.conf",
 
@@ -24,12 +24,7 @@ define btsync::instance(
   $use_upnp = true,
   $download_limit = 0,
   $upload_limit = 0,
-  $webui = {
-    listen   => undef,
-    login    => undef,
-    password => undef,
-    api_key  => undef,
-  },
+  $webui = {},
   $shared_folders = {},
   $disk_low_priority = undef,
   $folder_rescan_interval = undef,
@@ -54,143 +49,40 @@ define btsync::instance(
     validate_absolute_path($storage_path)
   }
 
-  concat_build { "btsync_${name}": }
-  ->
-  file { $conffile:
-    owner  => $user,
-    group  => $group,
-    mode   => '0400',
-    source => concat_output("btsync_${name}"),
+  concat {"btsync_${name}":
+    path  => $conffile,
+    owner => $user,
+    group => $group,
+    mode  => '0400',
   }
 
-  concat_fragment { "btsync_${name}+01":
-    content => template('btsync/yeasoft_initscript_header.erb'),
-  }
-
-  concat_fragment { "btsync_${name}+02":
-    content => '{',
-  }
-
-  concat_build { "btsync_${name}_json":
-    parent_build   => "btsync_${name}",
-    target         => "${::puppet_vardir}/concat/fragments/btsync_${name}/03",
-    file_delimiter => ',',
-    append_newline => false,
-  }
-
-  concat_fragment { "btsync_${name}_json+01":
+  concat::fragment {"btsync_${name}_json_global":
+    order   => '03',
+    target  => "btsync_${name}",
     content => template('btsync/global_preferences.erb'),
   }
 
-  concat_fragment { "btsync_${name}_json+02":
-    content => template('btsync/webui.erb'),
-  }
-
-  # Advanced Preferences
-  if $disk_low_priority != undef {
-    validate_bool($disk_low_priority)
-    concat_fragment { "btsync_${name}_json+disk_low_priority":
-      content => "
-  \"disk_low_priority\": ${disk_low_priority}",
+  if !empty($webui) {
+    concat::fragment {"btsync_${name}_json_webui":
+      order   => '04',
+      target  => "btsync_${name}",
+      content => template('btsync/webui.erb'),
     }
   }
 
-  if $folder_rescan_interval != undef {
-    if !is_integer($folder_rescan_interval) {
-      fail 'folder_rescan_interval does not match integer'
-    }
-    concat_fragment { "btsync_${name}_json+folder_rescan_interval":
-      content => "
-  \"folder_rescan_interval\": ${folder_rescan_interval}",
-    }
+  concat::fragment { "btsync_${name}_shared_folder_header":
+      order   => '10',
+      target  => "btsync_${name}",
+      content => '
+  "shared_folders":
+  [
+',
   }
 
-  if $lan_encrypt_data != undef {
-    validate_bool($lan_encrypt_data)
-    concat_fragment { "btsync_${name}_json+lan_encrypt_data":
-      content => "
-  \"lan_encrypt_data\": ${lan_encrypt_data}",
-    }
-  }
-
-  if $lan_use_tcp != undef {
-    validate_bool($lan_use_tcp)
-    concat_fragment { "btsync_${name}_json+lan_use_tcp":
-      content => "
-  \"lan_use_tcp\": ${lan_use_tcp}",
-    }
-  }
-
-  if $max_file_size_diff_for_patching != undef {
-    if !is_integer($max_file_size_diff_for_patching) {
-      fail 'max_file_size_diff_for_patching does not match integer'
-    }
-    concat_fragment { "btsync_${name}_json+max_file_size_diff_for_patching":
-      content => "
-  \"max_file_size_diff_for_patching\": ${max_file_size_diff_for_patching}",
-    }
-  }
-
-  if $max_file_size_for_versioning != undef {
-    if !is_integer($max_file_size_for_versioning) {
-      fail 'max_file_size_for_versioning does not match integer'
-    }
-    concat_fragment { "btsync_${name}_json+max_file_size_for_versioning":
-      content => "
-  \"max_file_size_for_versioning\": ${max_file_size_for_versioning}",
-    }
-  }
-
-  if $rate_limit_local_peers != undef {
-    validate_bool($rate_limit_local_peers)
-    concat_fragment { "btsync_${name}_json+rate_limit_local_peers":
-      content => "
-  \"rate_limit_local_peers\": ${rate_limit_local_peers}",
-    }
-  }
-
-  if $send_buf_size != undef {
-    if !is_integer($send_buf_size) {
-      fail 'send_buf_size does not match integer'
-    }
-    concat_fragment { "btsync_${name}_json+send_buf_size":
-      content => "
-  \"send_buf_size\": ${send_buf_size}",
-    }
-  }
-
-  if $recv_buf_size != undef {
-    if !is_integer($recv_buf_size) {
-      fail 'recv_buf_size does not match integer'
-    }
-    concat_fragment { "btsync_${name}_json+recv_buf_size":
-      content => "
-  \"recv_buf_size\": ${recv_buf_size}",
-    }
-  }
-
-  if $sync_max_time_diff != undef {
-    if !is_integer($sync_max_time_diff) {
-      fail 'sync_max_time_diff does not match integer'
-    }
-    concat_fragment { "btsync_${name}_json+sync_max_time_diff":
-      content => "
-  \"sync_max_time_diff\": ${sync_max_time_diff}",
-    }
-  }
-
-  if $sync_trash_ttl != undef {
-    if !is_integer($sync_trash_ttl) {
-      fail 'sync_trash_ttl does not match integer'
-    }
-    concat_fragment { "btsync_${name}_json+sync_trash_ttl":
-      content => "
-  \"sync_trash_ttl\": ${sync_trash_ttl}",
-    }
-  }
-
-  concat_fragment { "btsync_${name}+99":
-    content => '}',
+  concat::fragment { "btsync_${name}+99":
+    order    => '99',
+    target   => "btsync_${name}",
+    content  => template('btsync/advanced_options.erb'),
   }
 
   create_resources(
