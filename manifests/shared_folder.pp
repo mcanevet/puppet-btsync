@@ -21,67 +21,10 @@ define btsync::shared_folder(
   $use_sync_trash = true,
   $known_hosts = [],
 ) {
-  if ! defined(Concat_build["btsync_${instance}_json_shared_folders"]) {
-    concat_build { "btsync_${instance}_json_shared_folders":
-      parent_build => "btsync_${instance}_json",
-      target       => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json/03",
-    }
-
-    concat_fragment { "btsync_${instance}_json_shared_folders+01":
-      content => '
-  "shared_folders":
-  [',
-    }
-
-    concat_build { "btsync_${instance}_json_shared_folders_json":
-      parent_build   => "btsync_${instance}_json_shared_folders",
-      target         => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders/02",
-      file_delimiter => ',',
-      append_newline => false,
-    }
-
-    # FIXME: when a concat_build contains no fragment but only a concat_build(s)
-    # The "fragments" directory is not created and it fails with "No fragments
-    # specified for group", so we have to create a fake concat_fragment.
-    # This is quite ugly though...
-    concat_fragment { "btsync_${instance}_json_shared_folders_json+ZZZZ":
-      content => '{}',
-    }
-
-    concat_fragment { "btsync_${instance}_json_shared_folders+99":
-      content => '  ]',
-    }
-  }
-
-  concat_build { "btsync_${instance}_json_shared_folders_json_${secret}":
-    parent_build => "btsync_${instance}_json_shared_folders_json",
-    target       => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders_json/${secret}",
-  }
-
-  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}+01":
-    content => '    {',
-  }
-
-  concat_build { "btsync_${instance}_json_shared_folders_json_${secret}_json":
-    parent_build   => "btsync_${instance}_json_shared_folders_json_${secret}",
-    target         => "${::puppet_vardir}/concat/fragments/btsync_${instance}_json_shared_folders_json_${secret}/02",
-    file_delimiter => ',',
-    append_newline => false,
-  }
-
-  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}+99":
-    content => '    }
-',
-  }
-
-  concat_fragment { "btsync_${instance}_json_shared_folders_json_${secret}_json+01":
+  concat::fragment {"btsync_${instance} shared_folder ${name}":
+    order   => '11',
+    target  => "btsync_${instance}",
+    #content => "
     content => template('btsync/shared_folder.erb'),
   }
-
-  $_known_hosts = prefix($known_hosts, "${secret} on ")
-  btsync::known_host { $_known_hosts:
-    secret   => $secret,
-    instance => $instance,
-  }
-
 }
