@@ -39,9 +39,9 @@ define btsync::instance(
   $sync_trash_ttl = undef,
 ) {
 
-  Class['btsync::install'] ->
-  Btsync::Instance[$title] ~>
-  Class['btsync::service']
+  Class['btsync::install']
+  -> Btsync::Instance[$title]
+  ~> Class['btsync::service']
 
   validate_absolute_path($conffile)
 
@@ -71,23 +71,26 @@ define btsync::instance(
   }
 
   concat::fragment { "btsync_${name}_shared_folder_header":
-      order   => '10',
-      target  => "btsync_${name}",
-      content => '
+    order   => '10',
+    target  => "btsync_${name}",
+    content => '
   "shared_folders":
   [
 ',
   }
 
   concat::fragment { "btsync_${name}+99":
-    order    => '99',
-    target   => "btsync_${name}",
-    content  => template('btsync/advanced_options.erb'),
+    order   => '99',
+    target  => "btsync_${name}",
+    content => template('btsync/advanced_options.erb'),
   }
 
   create_resources(
     btsync::shared_folder,
     $shared_folders,
-    { instance => $name })
+    {
+      instance => $name
+    }
+  )
 
 }
