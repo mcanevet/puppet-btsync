@@ -14,7 +14,7 @@
 class btsync::repo {
   include ::apt
   case $::operatingsystem {
-    Debian: {
+    'Debian': {
       apt::source { 'btsync':
         location          => 'http://debian.yeasoft.net/btsync',
         release           => $::lsbdistcodename,
